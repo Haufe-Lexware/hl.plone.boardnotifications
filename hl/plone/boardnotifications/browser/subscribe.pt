@@ -1,0 +1,12 @@
+<tal:main define="isAnon context/@@plone_portal_state/anonymous;"
+          condition="python:not isAnon"
+          i18n:domain="hl.plone.boardnotifications">
+<tal:block define="subs view/is_subscribed">
+<tal:subscribe tal:condition="subs">
+    <a name="subscribe" tal:attributes="href string:${here/absolute_url}/unsubscribe" i18n:translate="">Unsubscribe</a>
+</tal:subscribe>
+<tal:unsubscribe tal:condition="not: subs">
+    <a name="subscribe" tal:attributes="href string:${here/absolute_url}/subscribe" i18n:translate="">Subscribe</a>
+</tal:unsubscribe>
+</tal:block>
+</tal:main>

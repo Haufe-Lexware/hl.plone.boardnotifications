@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="Products.PloneboardSubscription">
+
+  <browser:viewlet
+    name="plone.abovecontenttitle.documentactions"
+    for="Products.Ploneboard.content.PloneboardConversation.PloneboardConversation"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    class=".views.SubscriptionViewlet"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="Products.Ploneboard.interfaces.IConversation"
+    name="subscribe"
+    class=".views.Subscribe"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="Products.Ploneboard.interfaces.IConversation"
+    name="unsubscribe"
+    class=".views.Unsubscribe"
+    permission="zope2.View"
+    />
+
+</configure>
+

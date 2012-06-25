@@ -1,0 +1,108 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: hl.plone.boardnotifications 0.1\n"
+"POT-Creation-Date: 2012-06-11 10:22+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: Thomas Schorr <thomas.schorr@haufe-lexware.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: de\n"
+"Language-Name: German\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: hl.plone.boardnotifications\n"
+
+#: Profile title in configure.zcml
+msgid "Board Email Notifications"
+msgstr "Foren-Emailbenachrichtigungen"
+
+#: ./profiles/default/controlpanel.xml
+msgid "Board Notifications"
+msgstr "Foren-Emailbenachrichtigungen"
+
+#: ./interfaces.py:48
+msgid "Comment added (Subscriber)"
+msgstr "Neuer Beitrag (Thread-Abonnenten)"
+
+#: ./interfaces.py:42
+msgid "Comment deleted"
+msgstr "Beitrag gel\xc3\xb6scht"
+
+#: ./interfaces.py:36
+msgid "Comment edited"
+msgstr "Beitrag ge\xc3\xa4ndert"
+
+#: ./interfaces.py:45
+msgid "Comment edited (Subscriber)"
+msgstr "Beitrag ge\xc3\xa4ndert (Thread-Abonnenten)"
+
+#: ./notify.py:126
+msgid "Here you can configure the mail texts for mails that are send out to creators on subscribers of board content when it changes"
+msgstr "Hier werden die Texte der Benachrichtungsmails konfiguriert, die an Ersteller und Abonnenten von Foreninhalten bei \xc3\x84nderungen verschickt werden."
+
+#: ./interfaces.py:31
+msgid "Mail signature"
+msgstr "Signatur der Email"
+
+#: ./interfaces.py:28
+msgid "Mail subject"
+msgstr "Betreff"
+
+#: ./interfaces.py:49
+msgid "Mail text to send to subscribers of a thread where a comment has been added"
+msgstr "Text der Benachrichtigungsmail an Threadabonnenten, wenn ein Kommentar hinzugef\xc3\xbcgt wurde"
+
+#: ./interfaces.py:46
+msgid "Mail text to send to subscribers of a thread where a comment has been edited"
+msgstr "Text der Benachrichtigungsmail an Threadabonnenten, wenn ein Kommentar ge\xc3\xa4ndert wurde"
+
+#: ./interfaces.py:43
+msgid "Mail text when a comment has been deleted"
+msgstr "Text der Benachrichtungsmail beim L\xc3\xb6schen eines Beitrags"
+
+#: ./interfaces.py:37
+msgid "Mail text when a comment has been edited"
+msgstr "Text der Benachrichtungsmail beim \xc3\x84ndern eines Beitrags"
+
+#: ./interfaces.py:40
+msgid "Mail text when a thread has been moved to another board"
+msgstr "Text der Benachrichtungsmail wenn ein Thread in ein anders Forum verschoben wurde"
+
+#: ./interfaces.py:33
+msgid "Map Salutations"
+msgstr "Anrede"
+
+#: ./interfaces.py:34
+msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
+msgstr "Die salutation-Property aus portal_memberdata wird auf die Begr\xc3\xbc\xc3\x9fung in der Email abgebildet (salutation und Anrede mit : trennen; eine Anrede pro Zeile. Bsp: Frau:Sehr geehrte Frau %(fullname)s"
+
+#: Profile description in configure.zcml
+msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
+msgstr "Benachrichtigungen an Thread- und Beitragsersteller und Threadabonnenten bei \xc3\x84nderungen."
+
+#: ./notify.py:125
+msgid "Settings for board notification mails"
+msgstr "Einstellungen f\xc3\xbcr Foren-Emailbenachrichtigungen"
+
+#: ./interfaces.py:30
+msgid "Signature"
+msgstr "Signatur"
+
+#: ./interfaces.py:27
+msgid "Subject"
+msgstr "Betreff"
+
+#: ./browser/subscribe.pt:9
+msgid "Subscribe"
+msgstr "Thema abonnieren"
+
+#: ./interfaces.py:39
+msgid "Thread moved"
+msgstr "Thema verschoben"
+
+#: ./browser/subscribe.pt:6
+msgid "Unsubscribe"
+msgstr "Abonnement aufheben"
+

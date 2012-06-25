@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<componentregistry>
+  <utilities>
+    <utility
+      interface="hl.plone.boardnotifications.interfaces.INotifier"
+      factory="hl.plone.boardnotifications.notify.Notifier"
+    />
+    <utility
+      interface="hl.plone.boardnotifications.interfaces.ISubscriptions"
+      factory="hl.plone.boardnotifications.subscribe.Subscriptions"
+    />
+  </utilities>
+</componentregistry>
+

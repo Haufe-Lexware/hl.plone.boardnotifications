@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="hl.plone.boardnotifications">
+
+  <five:registerPackage package="." initialize=".initialize" />
+  <i18n:registerTranslations directory="locales" />
+
+  <include package=".browser" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Board Email Notifications"
+      directory="profiles/default"
+      description="Send email notifications to thread/comment owners and subscribers in case of content changes."
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+  <subscriber handler=".eventhandlers.threadmoved" />
+  <subscriber handler=".eventhandlers.commentedited" />
+  <subscriber handler=".eventhandlers.commentdeleted" />
+  <subscriber handler=".eventhandlers.subscriptioncommentedited" />
+  <subscriber handler=".eventhandlers.subscriptioncommentadded" />
+
+  <adapter factory=".notify.NotifierControlPanelAdapter" />
+
+  <browser:page
+      name="boardnotifier-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".notify.NotifierControlPanel"
+      permission="cmf.ManagePortal" />
+
+</configure>

@@ -1,0 +1,108 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2012-06-11 10:22+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: Profile title in configure.zcml
+msgid "Board Email Notifications"
+msgstr ""
+
+#: ./profiles/default/controlpanel.xml
+msgid "Board Notifications"
+msgstr ""
+
+#: ./interfaces.py:48
+msgid "Comment added (Subscriber)"
+msgstr ""
+
+#: ./interfaces.py:42
+msgid "Comment deleted"
+msgstr ""
+
+#: ./interfaces.py:36
+msgid "Comment edited"
+msgstr ""
+
+#: ./interfaces.py:45
+msgid "Comment edited (Subscriber)"
+msgstr ""
+
+#: ./notify.py:126
+msgid "Here you can configure the mail texts for mails that are send out to creators on subscribers of board content when it changes"
+msgstr ""
+
+#: ./interfaces.py:31
+msgid "Mail signature"
+msgstr ""
+
+#: ./interfaces.py:28
+msgid "Mail subject"
+msgstr ""
+
+#: ./interfaces.py:49
+msgid "Mail text to send to subscribers of a thread where a comment has been added"
+msgstr ""
+
+#: ./interfaces.py:46
+msgid "Mail text to send to subscribers of a thread where a comment has been edited"
+msgstr ""
+
+#: ./interfaces.py:43
+msgid "Mail text when a comment has been deleted"
+msgstr ""
+
+#: ./interfaces.py:37
+msgid "Mail text when a comment has been edited"
+msgstr ""
+
+#: ./interfaces.py:40
+msgid "Mail text when a thread has been moved to another board"
+msgstr ""
+
+#: ./interfaces.py:33
+msgid "Map Salutations"
+msgstr ""
+
+#: ./interfaces.py:34
+msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
+msgstr ""
+
+#: Profile description in configure.zcml
+msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
+msgstr ""
+
+#: ./notify.py:125
+msgid "Settings for board notification mails"
+msgstr ""
+
+#: ./interfaces.py:30
+msgid "Signature"
+msgstr ""
+
+#: ./interfaces.py:27
+msgid "Subject"
+msgstr ""
+
+#: ./browser/subscribe.pt:9
+msgid "Subscribe"
+msgstr "Subscribe to thread"
+
+#: ./interfaces.py:39
+msgid "Thread moved"
+msgstr ""
+
+#: ./browser/subscribe.pt:6
+msgid "Unsubscribe"
+msgstr "Unsubscribe"
+
