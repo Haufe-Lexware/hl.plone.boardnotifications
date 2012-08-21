@@ -23,10 +23,10 @@ class SubscriptionTests(unittest.TestCase):
         self.app.email_from_address = 'forum@lexware.de'
         mtool = MembershipToolMock()
         member = MemberDataMock(id='123456',
-                                email='thomas.schorr@haufe-lexware.com',
+                                email='max.mustermann@haufe-lexware.com',
                                 salutation='Herr',
-                                lastname='Schorr',
-                                firstname='Thomas')
+                                lastname='Mustermann',
+                                firstname='Max')
         mtool.members[member['id']] = member
         self.app._setObject(mtool.id, mtool)
         forum = ForumMock('testforum', 'test forum')
@@ -45,7 +45,7 @@ class SubscriptionTests(unittest.TestCase):
         got = subscriptions.subscribers_for(thread)
         self.failUnless(len(got) == 1, 'expected one subscriber')
         email = got[0].getProperty('email')
-        self.failUnless(email == 'thomas.schorr@haufe-lexware.com', 'wrong memberdata %s' % got[0])
+        self.failUnless(email == 'max.mustermann@haufe-lexware.com', 'wrong memberdata %s' % got[0])
 
 
 def test_suite():
