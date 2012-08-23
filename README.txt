@@ -38,8 +38,8 @@ You can use a number of variables to produce meaningful mail texts using standar
 - all member properties as defined in portal_memberdata
 - conversation title: use %(threadtitle)s to reference the conversation title in 
 - conversation URL: use %(threadurl)s to reference the conversation URL  
-- forum title (boardtitle) 
-- comment URL (commenturl) if appropriate
+- forum title: use %(boardtitle)s to reference the forum title
+- comment URL: use %(commenturl)s to reference the comment url
 
 Personalized Mail Salutations
 -----------------------------
