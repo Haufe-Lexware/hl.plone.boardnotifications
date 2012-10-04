@@ -3,9 +3,12 @@ import unittest
 import transaction
 from Testing import ZopeTestCase
 from zope.component import getGlobalSiteManager, queryUtility
+from zope.interface.verify import verifyObject
 from Products.MailHost.interfaces import IMailHost
 from Products.CMFCore.interfaces import IMembershipTool, IMemberDataTool, ISiteRoot
 from mocks import MailHostMock, MembershipToolMock, MemberdataToolMock, MemberDataMock, ForumMock, ConversationMock, CommentMock
+from hl.plone.boardnotifications.interfaces import INotifier
+
 
 class NotifierTestLayer(ZopeTestCase.layer.ZopeLite):
 
@@ -72,6 +75,9 @@ class NotifierTests(unittest.TestCase):
         gsm = getGlobalSiteManager()
         gsm.registerUtility(Subscriptions(), ISubscriptions)
         return queryUtility(ISubscriptions)
+
+    def test_interface(self):
+        verifyObject(INotifier, self._make_one())
 
     def test_thread_moved(self):
         n = self._make_one()

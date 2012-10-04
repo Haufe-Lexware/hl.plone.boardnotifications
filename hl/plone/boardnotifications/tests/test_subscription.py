@@ -2,15 +2,16 @@ import unittest
 import transaction
 from Testing import ZopeTestCase
 from zope.component import getGlobalSiteManager
+from zope.interface.verify import verifyObject
 from Products.CMFCore.interfaces import ISiteRoot
 from mocks import MembershipToolMock, ForumMock, ConversationMock, MemberDataMock
+from hl.plone.boardnotifications.interfaces import ISubscriptions
 
 
 class SubscriptionTests(unittest.TestCase):
 
     def _make_one(self):
         from hl.plone.boardnotifications.subscribe import Subscriptions
-        from hl.plone.boardnotifications.interfaces import ISubscriptions
         subscriptions = Subscriptions()
         getGlobalSiteManager().registerUtility(subscriptions, ISubscriptions)
         return subscriptions
@@ -36,6 +37,9 @@ class SubscriptionTests(unittest.TestCase):
                                   creator=member['id'])
         forum._setObject(thread.id, thread)
         self.app._setObject(forum.id, forum)
+
+    def test_interface(self):
+        verifyObject(ISubscriptions, self._make_one())
 
     def test_subscribers_for(self):
         subscriptions = self._make_one()

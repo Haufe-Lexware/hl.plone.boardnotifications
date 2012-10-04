@@ -10,12 +10,57 @@ class INotifier(Interface):
     notify in case of changes to comments/threads
     """
 
+    def comment_edited(comment):
+        """
+        a comment has been edited. Notify the creator of the comment.
+        """
+
+    def thread_moved(thread):
+        """
+        a thread has been moved to a new board. Notify all contributors.
+        """
+
+    def comment_deleted(comment):
+        """
+        a comment has been deleted. Notify its creator.
+        """
+
+    def subscription_comment_edited(comment):
+        """
+        a comment has been edited. Notify thread subsribers.
+        """
+
+    def subscription_comment_added(comment):
+        """
+        a comment has been added to a thread. Notify thread subscribers.
+        """
+
 
 class ISubscriptions(Interface):
 
     """
     manage notification subscriptions for threads
     """
+
+    def add(obj, user):
+        """
+        subscribe user to obj
+        """
+
+    def remove(obj, user):
+        """
+        remove user's subscription from obj
+        """
+
+    def check_subscriber(obj):
+        """
+        check wether the current user is subscribed to obj
+        """
+
+    def subscribers_for(obj):
+        """
+        answer all users that are subscribed to obj
+        """
 
 
 class INotifierSchema(Interface):

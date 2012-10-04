@@ -47,43 +47,45 @@ Personalized Mail Salutations
 The salutation field can be used to define gender specific salutations. If you don't need this feature, just leave it blank. When you save your settings, your empty string will be replaced by ':' - simply ignore this. You can still put a generic salutation in each mail template and use %(fullname)s to address the recipient.
 If you want personalized salutations, hl.plone.boardnotifications defines a new member property named 'salutation'. It is your responsibility to fill it per member by e.g. customizing @@personal-settings. Then you have to map the possible contents of the salutation member property to the desired salutation, e.g.:
 
-      	Mr:Dear Mr. %(fullname)s,
-	Mrs:Dear Mrs. %(fullname)s,
-	:Dear Mrs./Mr. %(fullname)s,
+    Mr:Dear Mr. %(fullname)s,
+
+    Mrs:Dear Mrs. %(fullname)s,
+
+    :Dear Mrs./Mr. %(fullname)s,
 
 
-Example of mailing texts
-------------------------
+Examples of mailing texts
+-------------------------
 
-new post for suscribed users:
+A comment has been added to a conversation, notify conversation subscribers:
 
-Subject: new comment in thread "%(threadtitle)s"
+    Subject:New comment in thread "%(threadtitle)s"
 
-%(salutation)s
+    %(salutation)s
 
-there is a new post in thread "%(threadtitle)s" placed in the forum "%(boardtitle)s".
-You are suscribed to this thread.
+    there is a new post in thread "%(threadtitle)s" placed in the forum "%(boardtitle)s".
+    You are suscribed to this thread.
 
-Get to the latests post:
-%(commenturl)s
+    Get to the latests post:
+    %(commenturl)s
 
-%(mailsignature)s
+    %(mailsignature)s
 
-If you don't want to be notified: %(threadurl)s/unsubscribe
+    If you don't want to be notified: %(threadurl)s/unsubscribe
 
-This e-mail has been sent automatically.
+    This e-mail has been sent automatically.
 
----
 
-information about moved topic
+A conversation has been moved to another forum:
 
-Subject: topic "%(threadtitle)s" has been moved
+    Subject:Conversation "%(threadtitle)s" has been moved
 
-%(salutation)s
+    %(salutation)s
 
-the topic "%(threadtitle)s" has been moved to "%(boardtitle)s".
+    the conversation "%(threadtitle)s" has been moved to "%(boardtitle)s".
 
-Get to moved topic: 
-%(threadurl)s
+    Get to moved conversation: 
+    %(threadurl)s
 
-%(mailsignature)s
+    %(mailsignature)s
+
