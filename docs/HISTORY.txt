@@ -1,10 +1,12 @@
 Changelog
 =========
 
-0.3 (23.10.2012)
+0.3 (13.12.2012)
 -------------------
 
 - added documentation
+- do not try to send emails to users that have been deleted
+- do not send email when a template contains only whitespace
 
 0.2 (23.08.2012)
 -------------------
