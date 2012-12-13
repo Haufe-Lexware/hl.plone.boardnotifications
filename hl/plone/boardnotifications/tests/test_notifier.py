@@ -117,6 +117,39 @@ class NotifierTests(unittest.TestCase):
         n.thread_moved(self.app.testforum.testthread)
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = []
+        n.thread_moved_text = ' \r\n '
+        n.thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
+
+    def test_thread_moved_missing_memberdata(self):
+        n = self._make_one()
+        n.thread_moved_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\nthreadurl:%(threadurl)s\nboardtitle:%(boardtitle)s\nsignature:%(mailsignature)s'
+        n.signature='signature'
+        n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'}
+        # if a user posts more than one comment, he still should get notified only once.
+        comment = CommentMock(id='testcomment2',
+                              title='Re: test',
+                              conversation=self.app.testforum.testthread,
+                              creator='123456')
+        self.app.testforum.testthread.comments.append(comment)
+        self.app.testforum.testthread._setObject(comment.id, comment)
+        mh = queryUtility(IMailHost)
+        mh.emails = []
+        mtool = queryUtility(IMembershipTool)
+        mtool.members['654321'] = None
+        n.thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==1, 'notifier should have sent 1 email, got %s instead' % got)
+        mail = mh.emails[0]
+        got = {}
+        got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+        self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
+        self.failUnless(got['threadurl']=='http://nohost/testforum/testthread', 'unexpected thread url, got "%s"' % got['threadurl'])
+        self.failUnless(got['boardtitle']=='test forum', 'unexpected board title, got "%s"' % got['boardtitle'])
+        self.failUnless(got['signature']=='signature', 'unexpected signature')
+        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
 
     def test_comment_edited(self):
         n = self._make_one()
@@ -147,6 +180,24 @@ class NotifierTests(unittest.TestCase):
         n.comment_edited(self.app.testforum.testthread.testthread)
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = []
+        n.comment_edited_text = ' \r\n   '
+        n.comment_edited(self.app.testforum.testthread.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
+
+    def test_comment_edited_missing_memberdata(self):
+        n = self._make_one()
+        n.comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.signature = u'signature'
+        n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'} 
+        mtool = queryUtility(IMembershipTool)
+        mtool.members['123456'] = None
+        mh = queryUtility(IMailHost)
+        mh.emails = []
+        n.comment_edited(self.app.testforum.testthread.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'comment creator has been deleted - no mail should be sent')
 
     def test_comment_deleted(self):
         n = self._make_one() 
@@ -171,6 +222,24 @@ class NotifierTests(unittest.TestCase):
         n.comment_deleted(self.app.testforum.testthread.testcomment)
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = []
+        n.comment_deleted_text = ' \r\n '
+        n.comment_deleted(self.app.testforum.testthread.testcomment)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
+
+    def test_comment_deleted_missing_memberdata(self):
+        n = self._make_one()
+        n.comment_deleted_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.signature='signature'
+        n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'}
+        mtool = queryUtility(IMembershipTool)
+        mtool.members['654321'] = None
+        mh = queryUtility(IMailHost)
+        mh.emails = []
+        n.comment_deleted(self.app.testforum.testthread.testcomment)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'comment creator has been deleted - no mail should be sent')
 
     def test_subscription_comment_edited(self):
         n = self._make_one()
@@ -214,6 +283,11 @@ class NotifierTests(unittest.TestCase):
         n.subscription_comment_edited(self.app.testforum.testthread.testthread)
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = []
+        n.subscription_comment_edited_text = ' \r\n '
+        n.subscription_comment_edited(self.app.testforum.testthread.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
 
     def test_subscription_comment_added(self):
         n = self._make_one()
@@ -257,6 +331,11 @@ class NotifierTests(unittest.TestCase):
         n.subscription_comment_added(self.app.testforum.testthread.testcomment)
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = [] 
+        n.subscription_comment_added_text = ' \r\n\t '
+        n.subscription_comment_added(self.app.testforum.testthread.testcomment)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
 
     def test_parse_email_headers(self):
         n = self._make_one()

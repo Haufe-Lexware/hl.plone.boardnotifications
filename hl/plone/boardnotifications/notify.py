@@ -127,8 +127,12 @@ class NotifierControlPanel(ControlPanelForm):
     form_fields = FormFields(INotifierSchema)
 
     label = _(u'Settings for board notification mails')
-    description = _(u'Here you can configure the mail texts for mails that are send out to creators on subscribers of board content when it changes')
+    description = _(u'Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes')
     form_name = u' Notifier Settings'
+
+    def updateWidgets(self):
+        super(NotifierControlPanel, self).updateWidgets()
+        self.widgets['subject'].size = 30
 
 
 class Notifier(Persistent):
@@ -203,6 +207,8 @@ class Notifier(Persistent):
         mdtool = getToolByName(site, 'portal_memberdata')
         keys = mdtool.propertyIds()
         mdata = mtool.getMemberById(memberid)
+        if mdata is None: # no memberdata, most likely the user has been deleted
+            return 
         result = {}
         result.update([(k, str(mdata.getProperty(k)).decode(cls._encoding())) for k in keys])
         return result
@@ -215,7 +221,7 @@ class Notifier(Persistent):
         mtool = getToolByName(comment, 'portal_membership')
         member = mtool.getAuthenticatedMember()
         creator = mtool.getMemberById(comment.Creator())
-        if (member == creator) or not self.comment_edited_text:
+        if (member == creator) or creator is None or not self.comment_edited_text or not self.comment_edited_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
@@ -229,12 +235,16 @@ class Notifier(Persistent):
         """
         a thread has been moved to a new board. Notify all contributors.
         """
-        if not self.thread_moved_text:
+        if not self.thread_moved_text or not self.thread_moved_text.strip():
             return
         di = self._thread_info(thread)
         memberids = set([comment.Creator() for comment in thread.getComments()])
         for memberid in memberids:
-            di.update(self._memberdata_for(memberid))
+            md = self._memberdata_for(memberid)
+            if md is None:
+                log.info('member with id %s could not be found, unable to send notification for %s' % (memberid, di['threadurl']))
+                continue
+            di.update(md)
             di['salutation'] = self._salutation_for_member(di)
             self._notify(di, self.thread_moved_text % di)
             log.info('thread %s has been moved, notified contributor %s' % (di['threadurl'], di.get('email')))
@@ -243,13 +253,17 @@ class Notifier(Persistent):
         """
         a comment has been deleted. Notify its creator.
         """
-        if not self.comment_deleted_text:
+        if not self.comment_deleted_text or not self.comment_deleted_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
+        di['commenturl'] = comment.absolute_url()
+        md = self._memberdata_for_content(comment)
+        if md is None:
+            log.info('member with id %s could not be found, unable to send notification for %s' % (comment.Creator(), di['commenturl']))
+            return
         di.update(self._memberdata_for_content(comment))
         di['salutation'] = self._salutation_for_member(di)
-        di['commenturl'] = comment.absolute_url()
         self._notify(di, self.comment_deleted_text % di)
         log.info('comment %s has been deleted, notified owner %s' % (di['commenturl'], di.get('email')))
 
@@ -257,7 +271,7 @@ class Notifier(Persistent):
         """
         a comment has been edited. Notify thread subsribers.
         """
-        if not self.subscription_comment_edited_text:
+        if not self.subscription_comment_edited_text or not self.subscription_comment_edited_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
@@ -278,7 +292,7 @@ class Notifier(Persistent):
         """
         a comment has been added to a thread. Notify thread subscribers.
         """
-        if not self.subscription_comment_added_text:
+        if not self.subscription_comment_added_text or not self.subscription_comment_added_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
