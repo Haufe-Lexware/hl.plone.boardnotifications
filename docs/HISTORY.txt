@@ -1,9 +1,14 @@
 Changelog
 =========
 
-0.4dev (unreleased)
+0.dev (unreleased)
 -------------------
 
+
+0.4 (5.2.2013)
+-------------------
+
+- fix https://github.com/Haufe-Lexware/hl.plone.boardnotifications/issues/1 (thanks erral)
 
 0.3 (13.12.2012)
 -------------------

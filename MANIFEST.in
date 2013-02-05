@@ -1,2 +1,2 @@
 recursive-include docs *.txt *.GPL
-recursive-include hl *.zcml *.po *.mo *.pot *.pt
+recursive-include hl *.zcml *.po *.mo *.pot *.pt *.xml
