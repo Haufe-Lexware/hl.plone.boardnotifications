@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 1.0\n"
-"POT-Creation-Date: 2012-06-11 10:22+0000\n"
+"POT-Creation-Date: 2013-02-05 15:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Thomas Schorr <thomas.schorr@haufe-lexware.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,59 +25,59 @@ msgstr ""
 msgid "Board Notifications"
 msgstr ""
 
-#: ./interfaces.py:48
+#: ./interfaces.py:98
 msgid "Comment added (Subscriber)"
 msgstr ""
 
-#: ./interfaces.py:42
+#: ./interfaces.py:90
 msgid "Comment deleted"
 msgstr ""
 
-#: ./interfaces.py:36
+#: ./interfaces.py:82
 msgid "Comment edited"
 msgstr ""
 
-#: ./interfaces.py:45
+#: ./interfaces.py:94
 msgid "Comment edited (Subscriber)"
 msgstr ""
 
-#: ./notify.py:126
-msgid "Here you can configure the mail texts for mails that are send out to creators on subscribers of board content when it changes"
+#: ./notify.py:130
+msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
 msgstr ""
 
-#: ./interfaces.py:31
+#: ./interfaces.py:76
 msgid "Mail signature"
 msgstr ""
 
-#: ./interfaces.py:28
+#: ./interfaces.py:73
 msgid "Mail subject"
 msgstr ""
 
-#: ./interfaces.py:49
+#: ./interfaces.py:100
 msgid "Mail text to send to subscribers of a thread where a comment has been added"
 msgstr ""
 
-#: ./interfaces.py:46
+#: ./interfaces.py:96
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr ""
 
-#: ./interfaces.py:43
+#: ./interfaces.py:92
 msgid "Mail text when a comment has been deleted"
 msgstr ""
 
-#: ./interfaces.py:37
+#: ./interfaces.py:84
 msgid "Mail text when a comment has been edited"
 msgstr ""
 
-#: ./interfaces.py:40
+#: ./interfaces.py:88
 msgid "Mail text when a thread has been moved to another board"
 msgstr ""
 
-#: ./interfaces.py:33
+#: ./interfaces.py:78
 msgid "Map Salutations"
 msgstr ""
 
-#: ./interfaces.py:34
+#: ./interfaces.py:80
 msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
 msgstr ""
 
@@ -85,15 +85,15 @@ msgstr ""
 msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
 msgstr ""
 
-#: ./notify.py:125
+#: ./notify.py:129
 msgid "Settings for board notification mails"
 msgstr ""
 
-#: ./interfaces.py:30
+#: ./interfaces.py:75
 msgid "Signature"
 msgstr ""
 
-#: ./interfaces.py:27
+#: ./interfaces.py:72
 msgid "Subject"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: ./interfaces.py:39
+#: ./interfaces.py:86
 msgid "Thread moved"
 msgstr ""
 
