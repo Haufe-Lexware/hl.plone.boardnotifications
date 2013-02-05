@@ -1,0 +1,111 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: hl.plone.boardnotifications 1.0\n"
+"POT-Creation-Date: 2013-02-05 15:40+0000\n"
+"PO-Revision-Date: 2013-02-05 16:51+0100\n"
+"Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: hl.plone.boardnotifications\n"
+
+#: Profile title in configure.zcml
+msgid "Board Email Notifications"
+msgstr "Ploneboarden e-posta bidezko jakinarazpenak"
+
+#: ./profiles/default/controlpanel.xml
+msgid "Board Notifications"
+msgstr "Ploneboarden jakinarazpenak"
+
+#: ./interfaces.py:98
+msgid "Comment added (Subscriber)"
+msgstr "Erantzuna gehitu da (Harpidedunentzat)"
+
+#: ./interfaces.py:90
+msgid "Comment deleted"
+msgstr "Erantzuna ezabatu da"
+
+#: ./interfaces.py:82
+msgid "Comment edited"
+msgstr "Erantzuna editatu da"
+
+#: ./interfaces.py:94
+msgid "Comment edited (Subscriber)"
+msgstr "Erantzuna editatu da (Harpidedunentzat)"
+
+#: ./notify.py:130
+msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
+msgstr "Hemen bidaliko diren e-posta mezuen edukia konfiguratu dezakezu. Gako-hitz hauek erabili ditzakezu foroko mezuei dagokien informazioa mezuan txertatzeko: Hariaren izenburua: %(threadtitle)s Hariaren helbidea: %(threadurl)s, Foroaren izena: %(boardtitle)s, Mezuaren sinadura: %(mailsignature)s Agurra: %(salutation)s eta, erantzunen ingurukoak direnean, %(commenturl)s"
+
+#: ./interfaces.py:76
+msgid "Mail signature"
+msgstr "E-posta mezuaren sinadura"
+
+#: ./interfaces.py:73
+msgid "Mail subject"
+msgstr "E-posta mezuaren gaia"
+
+#: ./interfaces.py:100
+msgid "Mail text to send to subscribers of a thread where a comment has been added"
+msgstr "Erantzun berri bat dagoenean harpidedunei bidali behar zaien mezua."
+
+#: ./interfaces.py:96
+msgid "Mail text to send to subscribers of a thread where a comment has been edited"
+msgstr "Erantzun berri bat editatzen denean harpidedunei bidali behar zaien mezua."
+
+#: ./interfaces.py:92
+msgid "Mail text when a comment has been deleted"
+msgstr "Erantzun bat ezabatzen denean bidali behar den mezua"
+
+#: ./interfaces.py:84
+msgid "Mail text when a comment has been edited"
+msgstr "Erantzun bat editatzen denean bidali behar den mezua"
+
+#: ./interfaces.py:88
+msgid "Mail text when a thread has been moved to another board"
+msgstr "Mezu-hari bat beste foro batera mugitzen denean "
+
+#: ./interfaces.py:78
+msgid "Map Salutations"
+msgstr "Agurra"
+
+#: ./interfaces.py:80
+msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
+msgstr "Esleitu erabiltzailearen propietateak mezuaren agurrerako (esleipen bat lerro bakoitzean, erabili : gakoa eta balioa bereizteko. Adb.: izena:fullname)"
+
+#: Profile description in configure.zcml
+msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
+msgstr "Edukia aldatzen denean e-posta jakinarazpenak bidali hariaren/erantzunaren egileei eta harpidedunei."
+
+#: ./notify.py:129
+msgid "Settings for board notification mails"
+msgstr "Ploneboard-en jakinarazpenen ezarpenak"
+
+#: ./interfaces.py:75
+msgid "Signature"
+msgstr "Sinadura"
+
+#: ./interfaces.py:72
+msgid "Subject"
+msgstr "Gaia"
+
+#: ./browser/subscribe.pt:9
+msgid "Subscribe"
+msgstr "Harpidetu"
+
+#: ./interfaces.py:86
+msgid "Thread moved"
+msgstr "Mezu-haria mugitu"
+
+#: ./browser/subscribe.pt:6
+msgid "Unsubscribe"
+msgstr "Harpidetza eten"
+
