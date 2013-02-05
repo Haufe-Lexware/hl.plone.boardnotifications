@@ -1,0 +1,112 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: hl.plone.boardnotifications 1.0\n"
+"POT-Creation-Date: 2013-02-05 15:40+0000\n"
+"PO-Revision-Date: 2013-02-05 16:58+0100\n"
+"Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: hl.plone.boardnotifications\n"
+"X-Poedit-Language: Spanish\n"
+
+#: Profile title in configure.zcml
+msgid "Board Email Notifications"
+msgstr "Notificaciones de Ploneboard"
+
+#: ./profiles/default/controlpanel.xml
+msgid "Board Notifications"
+msgstr "Notificaciones de Ploneboard"
+
+#: ./interfaces.py:98
+msgid "Comment added (Subscriber)"
+msgstr "Comentario añadido (para suscriptores)"
+
+#: ./interfaces.py:90
+msgid "Comment deleted"
+msgstr "Comentario eliminado"
+
+#: ./interfaces.py:82
+msgid "Comment edited"
+msgstr "Comentario editado"
+
+#: ./interfaces.py:94
+msgid "Comment edited (Subscriber)"
+msgstr "Comentario editado (para suscriptores)"
+
+#: ./notify.py:130
+msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
+msgstr "Aquí puede configurar el texto de los e-mails que se enviarán. Puede utilizar las siguientes palabras clave para que se sustituyan con los datos del mensaje correspondiente: Título del hilo %(threadtitle)s %(threadurl)s, Nombre del foro %(boardtitle)s, Firma del e-mail %(mailsignature)s, Saludo %(salutation)s y cuando corresponda, dirección del comentario %(commenturl)s."
+
+#: ./interfaces.py:76
+msgid "Mail signature"
+msgstr "Firma del e-mail"
+
+#: ./interfaces.py:73
+msgid "Mail subject"
+msgstr "Asunto del e-mail"
+
+#: ./interfaces.py:100
+msgid "Mail text to send to subscribers of a thread where a comment has been added"
+msgstr "Texto a enviar a los suscriptores cuando se añada un comentario"
+
+#: ./interfaces.py:96
+msgid "Mail text to send to subscribers of a thread where a comment has been edited"
+msgstr "Texto a enviar a los suscriptores cuando se edita un comentario"
+
+#: ./interfaces.py:92
+msgid "Mail text when a comment has been deleted"
+msgstr "Texto a enviar cuando se elimina un comentario"
+
+#: ./interfaces.py:84
+msgid "Mail text when a comment has been edited"
+msgstr "Texto a enviar cuando se edita un comentario"
+
+#: ./interfaces.py:88
+msgid "Mail text when a thread has been moved to another board"
+msgstr "Texto a enviar cuando un hilo se mueve a otro foro"
+
+#: ./interfaces.py:78
+msgid "Map Salutations"
+msgstr "Asignar saludos"
+
+#: ./interfaces.py:80
+msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
+msgstr "Asigna las variables que se pueden utlizar en el saludo basándote en las propiedades de usuario (una asignación por línea, utiliza : para separar la clave y el valor. P.ej: nombre:fullname)."
+
+#: Profile description in configure.zcml
+msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
+msgstr "Enviar notificaciones por e-mail a los creadores del hilo/comentario y a los suscriptores cuando cambia el contenido."
+
+#: ./notify.py:129
+msgid "Settings for board notification mails"
+msgstr "Configuración de las notificaciones por e-mail"
+
+#: ./interfaces.py:75
+msgid "Signature"
+msgstr "Firma"
+
+#: ./interfaces.py:72
+msgid "Subject"
+msgstr "Asunto"
+
+#: ./browser/subscribe.pt:9
+msgid "Subscribe"
+msgstr "Suscribir"
+
+#: ./interfaces.py:86
+msgid "Thread moved"
+msgstr "Hilo movido"
+
+#: ./browser/subscribe.pt:6
+msgid "Unsubscribe"
+msgstr "Cancelar suscripción"
+
