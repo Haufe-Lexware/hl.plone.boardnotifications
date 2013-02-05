@@ -119,7 +119,7 @@ class NotifierControlPanelAdapter(SchemaAdapterBase):
             util.subscription_comment_edited_text = value
 
     subscription_comment_edited_text = property(get_subscription_comment_edited_text, set_subscription_comment_edited_text)
- 
+
 
 
 class NotifierControlPanel(ControlPanelForm):
@@ -127,7 +127,7 @@ class NotifierControlPanel(ControlPanelForm):
     form_fields = FormFields(INotifierSchema)
 
     label = _(u'Settings for board notification mails')
-    description = _(u'Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes')
+    description = _(u'Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s')
     form_name = u' Notifier Settings'
 
     def updateWidgets(self):
@@ -208,7 +208,7 @@ class Notifier(Persistent):
         keys = mdtool.propertyIds()
         mdata = mtool.getMemberById(memberid)
         if mdata is None: # no memberdata, most likely the user has been deleted
-            return 
+            return
         result = {}
         result.update([(k, str(mdata.getProperty(k)).decode(cls._encoding())) for k in keys])
         return result
