@@ -1,0 +1,6 @@
+hl.plone.boardnotifications credits
+-----------------------------------
+Tatjana Feiler (concept, documentation)
+Mikel Larreategi (basque and spanish translations)
+Thomas Schorr (main developer)
+
