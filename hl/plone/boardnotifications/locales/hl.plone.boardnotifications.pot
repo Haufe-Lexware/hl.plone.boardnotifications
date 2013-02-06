@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 1.0\n"
-"POT-Creation-Date: 2013-02-05 15:40+0000\n"
+"POT-Creation-Date: 2013-02-06 10:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Thomas Schorr <thomas.schorr@haufe-lexware.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
