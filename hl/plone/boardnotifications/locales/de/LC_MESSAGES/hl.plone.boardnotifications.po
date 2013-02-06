@@ -40,7 +40,7 @@ msgstr "Beitrag ge\xc3\xa4ndert (Thread-Abonnenten)"
 
 #: ./notify.py:130
 msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
-msgstr ""
+msgstr "Hier werden die Texte der Benachrichtungsmails konfiguriert, die an Ersteller und Abonnenten von Foreninhalten bei \xc3\x84nderungen verschickt werden. Folgende Variablen werden durch die entsprechenden Inhalte des Threads ersetzt: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s und %(commenturl)s (falls sinnvoll)."
 
 #: ./interfaces.py:76
 msgid "Mail signature"
