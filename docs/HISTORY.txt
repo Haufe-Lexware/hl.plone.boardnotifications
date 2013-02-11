@@ -1,9 +1,10 @@
 Changelog
 =========
 
-0.dev (unreleased)
+0.5 (11.2.2013)
 -------------------
 
+- added basque and spanish translations (thanks erral)
 
 0.4 (5.2.2013)
 -------------------
