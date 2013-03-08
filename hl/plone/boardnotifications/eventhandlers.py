@@ -8,7 +8,7 @@ from .notify import INotifier
 @adapter(IConversation, IObjectMovedEvent)
 def threadmoved(conv, event):
     """
-    send email notification when a thread was moved
+    Send email notification when a thread was moved
     """
     if IObjectRemovedEvent.providedBy(event) or IObjectAddedEvent.providedBy(event):
         return
@@ -18,7 +18,7 @@ def threadmoved(conv, event):
 @adapter(IComment, IObjectModifiedEvent)
 def commentedited(comment, event):
     """
-    send email notification when a comment has been edited
+    Send email notification when a comment has been edited
     """
     n = queryUtility(INotifier)
     n.comment_edited(comment)
@@ -26,7 +26,7 @@ def commentedited(comment, event):
 @adapter(IComment, IObjectEditedEvent)
 def subscriptioncommentedited(comment, event):
     """
-    send email notification to thread subscribers when a comment has been edited
+    Send email notification to thread subscribers when a comment has been edited
     """
     n = queryUtility(INotifier)
     n.subscription_comment_edited(comment)
@@ -34,7 +34,7 @@ def subscriptioncommentedited(comment, event):
 @adapter(IComment, IObjectAddedEvent)
 def subscriptioncommentadded(comment, event):
     """
-    send email notification to thread subscribers when a comment has been added
+    Send email notification to thread subscribers when a comment has been added
     """
     n = queryUtility(INotifier)
     # XXX imho the following call is missing in PloneboardComment.addReply, s. http://plone.org/products/ploneboard/issues/240
@@ -44,8 +44,8 @@ def subscriptioncommentadded(comment, event):
 @adapter(IComment, IObjectRemovedEvent)
 def commentdeleted(comment, event):
     """
-    send email notification when a comment has been edited
+    Send email notification when a comment has been edited
     """
     n = queryUtility(INotifier)
     n.comment_deleted(comment)
-    
+

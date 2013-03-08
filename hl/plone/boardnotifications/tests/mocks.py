@@ -83,18 +83,18 @@ class ForumMock(ContentMock, Folder):
 
 class ConversationMock(ContentMock, Folder):
     """
-    mock relevant interface of PloneboardConversation
+    Mock relevant interface of PloneboardConversation
     """
 
-    def __init__(self, id, title, forum, creator=None):
+    def __init__(self, id, title, forum, creator=None, commenttext=''):
         Folder.__init__(self, id)
         ContentMock.__init__(self, id, title, creator)
         self.forum = forum
         self.comments = []
-        comment = CommentMock(id, title, self, creator)
+        comment = CommentMock(id, title, self, creator, commenttext)
         self.comments.append(comment)
-        self._setObject(id, comment)
         comment = comment.__of__(self)
+        self._setObject(id, comment)
 
     def getForum(self):
         return self.forum
@@ -111,15 +111,19 @@ class ConversationMock(ContentMock, Folder):
 
 class CommentMock(ContentMock):
     """
-    mock relevant interface of PloneboardComment
+    Mock relevant interface of PloneboardComment
     """
 
-    def __init__(self, id, title, conversation, creator=None):
+    def __init__(self, id, title, conversation, creator=None, text=''):
         super(CommentMock, self).__init__(id, title, creator)
         self.conversation = conversation
+        self.text = text
 
     def getConversation(self):
         return self.conversation
+
+    def getText(self):
+        return self.text
 
     def absolute_url(self):
         return '%s/%s' % (self.conversation.absolute_url(), self.id)

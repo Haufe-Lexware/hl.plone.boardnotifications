@@ -11,7 +11,7 @@ log = logging.getLogger('hl.plone.boardnotifications.subscribe')
 class Subscriptions(PersistentMapping):
 
     """
-    part of this code has been taken from Products.PloneboardSubscription
+    Part of this code has been taken from Products.PloneboardSubscription
     """
 
     implements(ISubscriptions)
@@ -29,7 +29,7 @@ class Subscriptions(PersistentMapping):
         return filter(lambda o: o is not None, [mtool.getMemberById(sid) for sid in subscriberids])
 
     def add(self, obj, user):
-        """ adds user """
+        """ Adds user """
         obj_id = self.key_for_obj(obj)
         if obj_id not in self.keys():
             self[obj_id] = PersistentList()
@@ -38,19 +38,19 @@ class Subscriptions(PersistentMapping):
             self[obj_id].append(user)
 
     def check_subscriber(self, obj):
-        """ checks user """
+        """ Checks user """
         mtool = getToolByName(obj, 'portal_membership')
         user = mtool.getAuthenticatedMember().getId()
         return self.check_subscriber_id(self.key_for_obj(obj), user)
 
     def check_subscriber_id(self, obj_id, user):
-        """ checks user """
+        """ Checks user """
         if obj_id not in self.keys():
             return False
         return user in self[obj_id]
 
     def remove(self, obj, user):
-        """ deletes user """
+        """ Deletes user """
         obj_id = self.key_for_obj(obj)
         if self.check_subscriber_id(obj_id, user):
             log.info('Removing subscription of user %s to %s' % (user, obj_id))

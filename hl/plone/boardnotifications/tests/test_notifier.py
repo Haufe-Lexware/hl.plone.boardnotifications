@@ -18,7 +18,7 @@ class NotifierTestLayer(ZopeTestCase.layer.ZopeLite):
         gsm.registerUtility(MailHostMock(), IMailHost)
         gsm.registerUtility(MembershipToolMock(), IMembershipTool)
         gsm.registerUtility(MemberdataToolMock(), IMemberDataTool)
-        
+
 
 class NotifierTests(unittest.TestCase):
 
@@ -51,10 +51,12 @@ class NotifierTests(unittest.TestCase):
         thread = ConversationMock(id='testthread',
                                   title='test thread',
                                   forum=forum,
-                                  creator=md1['id'])
+                                  creator=md1['id'],
+                                  commenttext='Awesome!')
         comment = CommentMock(id='testcomment',
                               title='Re: test',
                               conversation=thread,
+                              text='Awesome!',
                               creator=md2['id'])
         thread.comments.append(comment)
         thread._setObject(comment.id, comment)
@@ -88,6 +90,7 @@ class NotifierTests(unittest.TestCase):
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
+                              text='Awesome!',
                               creator='123456')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
@@ -132,6 +135,7 @@ class NotifierTests(unittest.TestCase):
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
+                              text='Awesome!',
                               creator='123456')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
@@ -153,7 +157,7 @@ class NotifierTests(unittest.TestCase):
 
     def test_comment_edited(self):
         n = self._make_one()
-        n.comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature = u'signature'
         n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'} 
         n.comment_edited(self.app.testforum.testthread.testthread)
@@ -164,6 +168,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
+        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         self.app.portal_membership.authenticated = '123456'
         n.comment_edited(self.app.testforum.testthread.testthread)
@@ -188,7 +193,7 @@ class NotifierTests(unittest.TestCase):
 
     def test_comment_edited_missing_memberdata(self):
         n = self._make_one()
-        n.comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature = u'signature'
         n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'} 
         mtool = queryUtility(IMembershipTool)
@@ -201,7 +206,7 @@ class NotifierTests(unittest.TestCase):
 
     def test_comment_deleted(self):
         n = self._make_one() 
-        n.comment_deleted_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.comment_deleted_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature='signature'
         n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'} 
         n.comment_deleted(self.app.testforum.testthread.testcomment)
@@ -212,6 +217,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
+        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
         mh.emails = []
         n.comment_deleted_text = None
         n.comment_deleted(self.app.testforum.testthread.testcomment)
@@ -230,7 +236,7 @@ class NotifierTests(unittest.TestCase):
 
     def test_comment_deleted_missing_memberdata(self):
         n = self._make_one()
-        n.comment_deleted_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.comment_deleted_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature='signature'
         n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'}
         mtool = queryUtility(IMembershipTool)
@@ -245,7 +251,7 @@ class NotifierTests(unittest.TestCase):
         n = self._make_one()
         subscriptions = self._register_subscriptions()
         subscriptions.add(self.app.testforum.testthread, '654321')
-        n.subscription_comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
+        n.subscription_comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature='signature'
         n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'} 
         mh = queryUtility(IMailHost)
@@ -258,9 +264,11 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
+        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
+                              text='Awesome!',
                               creator='123456')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
@@ -309,6 +317,7 @@ class NotifierTests(unittest.TestCase):
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
+                              text='Awesome!',
                               creator='654321')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
