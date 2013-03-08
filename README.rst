@@ -53,6 +53,7 @@ in the email templates:
 - conversation URL: use ``%(threadurl)s`` to reference the conversation's URL;
 - forum title: use ``%(boardtitle)s`` to reference the forum's title;
 - comment URL: use ``%(commenturl)s`` to reference the comment's URL.
+- comment text: use ``%(commenttext)s`` to reference the comment's text.
 
 Personalized Mail Salutations
 -----------------------------
