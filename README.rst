@@ -89,6 +89,9 @@ A comment has been added to a conversation, notify conversation subscribers::
     There is a new post in thread "%(threadtitle)s", in the forum "%(boardtitle)s".
     You are suscribed to this thread.
 
+    Here is the comment text:
+    %(commenttext)s
+
     Go to the latests post:
     %(commenturl)s
 
