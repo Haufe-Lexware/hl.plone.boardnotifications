@@ -1,6 +1,14 @@
 from zope.component import adapter, queryUtility
-from zope.lifecycleevent.interfaces import IObjectMovedEvent, IObjectModifiedEvent, IObjectRemovedEvent, IObjectAddedEvent
-from Products.Archetypes.interfaces import IObjectEditedEvent
+from zope.lifecycleevent.interfaces import (
+        IObjectAddedEvent,
+        IObjectModifiedEvent,
+        IObjectMovedEvent,
+        IObjectRemovedEvent,
+        )
+from Products.Archetypes.interfaces import (
+        IObjectEditedEvent,
+        IObjectInitializedEvent,
+        )
 from Products.Ploneboard.interfaces import IConversation, IComment
 from .notify import INotifier
 
@@ -31,7 +39,7 @@ def subscriptioncommentedited(comment, event):
     n = queryUtility(INotifier)
     n.subscription_comment_edited(comment)
 
-@adapter(IComment, IObjectAddedEvent)
+@adapter(IComment, IObjectInitializedEvent)
 def subscriptioncommentadded(comment, event):
     """
     Send email notification to thread subscribers when a comment has been added
