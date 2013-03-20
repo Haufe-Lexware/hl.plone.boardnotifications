@@ -103,8 +103,7 @@ class ConversationMock(ContentMock, Folder):
         return '%s/%s' % (self.forum.absolute_url(), self.id)
 
     def getComments(self):
-        # return [self[comment.id] for comment in self.comments]
-        return self.comments
+        return [self._getOb(comment.id) for comment in self.comments]
 
     def getPhysicalPath(self):
         return self.getForum().getPhysicalPath() + (self.id,)
