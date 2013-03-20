@@ -127,7 +127,12 @@ class NotifierControlPanel(ControlPanelForm):
     form_fields = FormFields(INotifierSchema)
 
     label = _(u'Settings for board notification mails')
-    description = _(u'Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s')
+    description = _(u'Here you can configure the mail texts for mails that are '
+            'sent out to creators or subscribers of board content when it '
+            'changes. You can use the following keywords to replace them using '
+            'content coming from the thread: %(threadtitle)s, %(threadurl)s, '
+            '%(boardtitle)s, %(mailsignature)s, %(salutation)s and, when '
+            'appropriate, %(commenturl)s and %(commenttext)s.')
     form_name = u' Notifier Settings'
 
     def updateWidgets(self):
@@ -215,7 +220,7 @@ class Notifier(Persistent):
 
     def comment_edited(self, comment):
         """
-        a comment has been edited. Notify the creator of the comment.
+        A comment has been edited. Notify the creator of the comment.
         """
         # do not notify the creator if she has edited the comment herself
         mtool = getToolByName(comment, 'portal_membership')
@@ -228,12 +233,13 @@ class Notifier(Persistent):
         di.update(self._memberdata_for_content(comment))
         di['salutation'] = self._salutation_for_member(di)
         di['commenturl'] = comment.absolute_url()
+        di['commenttext'] = comment.getText()
         self._notify(di, self.comment_edited_text % di)
         log.info('comment %s has been edited, notified owner %s' % (di['commenturl'], di.get('email')))
 
     def thread_moved(self, thread):
         """
-        a thread has been moved to a new board. Notify all contributors.
+        A thread has been moved to a new board. Notify all contributors.
         """
         if not self.thread_moved_text or not self.thread_moved_text.strip():
             return
@@ -251,13 +257,14 @@ class Notifier(Persistent):
 
     def comment_deleted(self, comment):
         """
-        a comment has been deleted. Notify its creator.
+        A comment has been deleted. Notify its creator.
         """
         if not self.comment_deleted_text or not self.comment_deleted_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
+        di['commenttext'] = comment.getText()
         md = self._memberdata_for_content(comment)
         if md is None:
             log.info('member with id %s could not be found, unable to send notification for %s' % (comment.Creator(), di['commenturl']))
@@ -269,13 +276,14 @@ class Notifier(Persistent):
 
     def subscription_comment_edited(self, comment):
         """
-        a comment has been edited. Notify thread subsribers.
+        A comment has been edited. Notify thread subscribers.
         """
         if not self.subscription_comment_edited_text or not self.subscription_comment_edited_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
+        di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
         mdtool = getToolByName(comment, 'portal_memberdata')
@@ -290,13 +298,14 @@ class Notifier(Persistent):
 
     def subscription_comment_added(self, comment):
         """
-        a comment has been added to a thread. Notify thread subscribers.
+        A comment has been added to a thread. Notify thread subscribers.
         """
         if not self.subscription_comment_added_text or not self.subscription_comment_added_text.strip():
             return
         thread = comment.getConversation()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
+        di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
         mdtool = getToolByName(comment, 'portal_memberdata')
