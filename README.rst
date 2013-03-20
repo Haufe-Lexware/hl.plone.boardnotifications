@@ -2,7 +2,7 @@ Introduction
 ============
 
 ``hl.plone.boardnotifications`` provides email notifications for 
-`Ploneboard <http://pypi.python.org/pypi/Products.Ploneboard>`__) for several
+`Ploneboard <http://pypi.python.org/pypi/Products.Ploneboard>`__ for several
 purposes. It allows you to:
 
 - let users subscribe/unsubscribe to forum threads;
