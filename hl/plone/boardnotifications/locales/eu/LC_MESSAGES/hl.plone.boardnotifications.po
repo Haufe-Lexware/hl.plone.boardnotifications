@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 1.0\n"
-"POT-Creation-Date: 2013-02-06 10:12+0000\n"
+"POT-Creation-Date: 2013-03-25 12:34+0000\n"
 "PO-Revision-Date: 2013-02-05 16:53+0100\n"
 "Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
 "Language-Team: eu <eu@li.org>\n"
@@ -26,25 +26,25 @@ msgstr "Ploneboarden e-posta bidezko jakinarazpenak"
 msgid "Board Notifications"
 msgstr "Ploneboarden jakinarazpenak"
 
-#: ./interfaces.py:98
+#: ./interfaces.py:103
 msgid "Comment added (Subscriber)"
 msgstr "Erantzuna gehitu da (Harpidedunentzat)"
 
-#: ./interfaces.py:90
+#: ./interfaces.py:92
 msgid "Comment deleted"
 msgstr "Erantzuna ezabatu da"
 
-#: ./interfaces.py:82
+#: ./interfaces.py:84
 msgid "Comment edited"
 msgstr "Erantzuna editatu da"
 
-#: ./interfaces.py:94
+#: ./interfaces.py:97
 msgid "Comment edited (Subscriber)"
 msgstr "Erantzuna editatu da (Harpidedunentzat)"
 
 #: ./notify.py:130
-msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
-msgstr "Hemen bidaliko diren e-posta mezuen edukia konfiguratu dezakezu. Gako-hitz hauek erabili ditzakezu foroko mezuei dagokien informazioa mezuan txertatzeko: Hariaren izenburua: %(threadtitle)s Hariaren helbidea: %(threadurl)s, Foroaren izena: %(boardtitle)s, Mezuaren sinadura: %(mailsignature)s Agurra: %(salutation)s eta, erantzunen ingurukoak direnean, %(commenturl)s"
+msgid "Here you can configure the mail texts for mails that are sent out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s and, when appropriate, %(commenturl)s and %(commenttext)s."
+msgstr ""
 
 #: ./interfaces.py:76
 msgid "Mail signature"
@@ -54,23 +54,23 @@ msgstr "E-posta mezuaren sinadura"
 msgid "Mail subject"
 msgstr "E-posta mezuaren gaia"
 
-#: ./interfaces.py:100
+#: ./interfaces.py:105
 msgid "Mail text to send to subscribers of a thread where a comment has been added"
 msgstr "Erantzun berri bat dagoenean harpidedunei bidali behar zaien mezua."
 
-#: ./interfaces.py:96
+#: ./interfaces.py:99
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr "Erantzun berri bat editatzen denean harpidedunei bidali behar zaien mezua."
 
-#: ./interfaces.py:92
+#: ./interfaces.py:94
 msgid "Mail text when a comment has been deleted"
 msgstr "Erantzun bat ezabatzen denean bidali behar den mezua"
 
-#: ./interfaces.py:84
+#: ./interfaces.py:86
 msgid "Mail text when a comment has been edited"
 msgstr "Erantzun bat editatzen denean bidali behar den mezua"
 
-#: ./interfaces.py:88
+#: ./interfaces.py:90
 msgid "Mail text when a thread has been moved to another board"
 msgstr "Mezu-hari bat beste foro batera mugitzen denean "
 
@@ -102,7 +102,7 @@ msgstr "Gaia"
 msgid "Subscribe"
 msgstr "Harpidetu"
 
-#: ./interfaces.py:86
+#: ./interfaces.py:88
 msgid "Thread moved"
 msgstr "Mezu-haria mugitu"
 

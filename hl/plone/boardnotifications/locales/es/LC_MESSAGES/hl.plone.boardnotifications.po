@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 1.0\n"
-"POT-Creation-Date: 2013-02-06 10:12+0000\n"
+"POT-Creation-Date: 2013-03-25 12:34+0000\n"
 "PO-Revision-Date: 2013-02-05 16:58+0100\n"
 "Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -26,25 +26,25 @@ msgstr "Notificaciones de Ploneboard"
 msgid "Board Notifications"
 msgstr "Notificaciones de Ploneboard"
 
-#: ./interfaces.py:98
+#: ./interfaces.py:103
 msgid "Comment added (Subscriber)"
 msgstr "Comentario añadido (para suscriptores)"
 
-#: ./interfaces.py:90
+#: ./interfaces.py:92
 msgid "Comment deleted"
 msgstr "Comentario eliminado"
 
-#: ./interfaces.py:82
+#: ./interfaces.py:84
 msgid "Comment edited"
 msgstr "Comentario editado"
 
-#: ./interfaces.py:94
+#: ./interfaces.py:97
 msgid "Comment edited (Subscriber)"
 msgstr "Comentario editado (para suscriptores)"
 
 #: ./notify.py:130
-msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
-msgstr "Aquí puede configurar el texto de los e-mails que se enviarán. Puede utilizar las siguientes palabras clave para que se sustituyan con los datos del mensaje correspondiente: Título del hilo %(threadtitle)s %(threadurl)s, Nombre del foro %(boardtitle)s, Firma del e-mail %(mailsignature)s, Saludo %(salutation)s y cuando corresponda, dirección del comentario %(commenturl)s."
+msgid "Here you can configure the mail texts for mails that are sent out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s and, when appropriate, %(commenturl)s and %(commenttext)s."
+msgstr "Aquí puede configurar el texto de los e-mails que se enviarán. Puede utilizar las siguientes palabras clave para que se sustituyan con los datos del mensaje correspondiente: Título del hilo %(threadtitle)s %(threadurl)s, Nombre del foro %(boardtitle)s, Firma del e-mail %(mailsignature)s, Saludo %(salutation)s y cuando corresponda, dirección del comentario %(commenturl)s y texto del comentario %(commenttext)s."
 
 #: ./interfaces.py:76
 msgid "Mail signature"
@@ -54,23 +54,23 @@ msgstr "Firma del e-mail"
 msgid "Mail subject"
 msgstr "Asunto del e-mail"
 
-#: ./interfaces.py:100
+#: ./interfaces.py:105
 msgid "Mail text to send to subscribers of a thread where a comment has been added"
 msgstr "Texto a enviar a los suscriptores cuando se añada un comentario"
 
-#: ./interfaces.py:96
+#: ./interfaces.py:99
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr "Texto a enviar a los suscriptores cuando se edita un comentario"
 
-#: ./interfaces.py:92
+#: ./interfaces.py:94
 msgid "Mail text when a comment has been deleted"
 msgstr "Texto a enviar cuando se elimina un comentario"
 
-#: ./interfaces.py:84
+#: ./interfaces.py:86
 msgid "Mail text when a comment has been edited"
 msgstr "Texto a enviar cuando se edita un comentario"
 
-#: ./interfaces.py:88
+#: ./interfaces.py:90
 msgid "Mail text when a thread has been moved to another board"
 msgstr "Texto a enviar cuando un hilo se mueve a otro foro"
 
@@ -102,7 +102,7 @@ msgstr "Asunto"
 msgid "Subscribe"
 msgstr "Suscribir"
 
-#: ./interfaces.py:86
+#: ./interfaces.py:88
 msgid "Thread moved"
 msgstr "Hilo movido"
 

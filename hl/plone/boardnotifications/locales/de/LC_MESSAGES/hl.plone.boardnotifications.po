@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 0.1\n"
-"POT-Creation-Date: 2013-02-06 10:12+0000\n"
+"POT-Creation-Date: 2013-03-25 12:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Thomas Schorr <thomas.schorr@haufe-lexware.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,25 +22,25 @@ msgstr "Foren-Emailbenachrichtigungen"
 msgid "Board Notifications"
 msgstr "Foren-Emailbenachrichtigungen"
 
-#: ./interfaces.py:98
+#: ./interfaces.py:103
 msgid "Comment added (Subscriber)"
 msgstr "Neuer Beitrag (Thread-Abonnenten)"
 
-#: ./interfaces.py:90
+#: ./interfaces.py:92
 msgid "Comment deleted"
 msgstr "Beitrag gel\xc3\xb6scht"
 
-#: ./interfaces.py:82
+#: ./interfaces.py:84
 msgid "Comment edited"
 msgstr "Beitrag ge\xc3\xa4ndert"
 
-#: ./interfaces.py:94
+#: ./interfaces.py:97
 msgid "Comment edited (Subscriber)"
 msgstr "Beitrag ge\xc3\xa4ndert (Thread-Abonnenten)"
 
 #: ./notify.py:130
-msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
-msgstr "Hier werden die Texte der Benachrichtungsmails konfiguriert, die an Ersteller und Abonnenten von Foreninhalten bei \xc3\x84nderungen verschickt werden. Folgende Variablen werden durch die entsprechenden Inhalte des Threads ersetzt: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s und %(commenturl)s (falls sinnvoll)."
+msgid "Here you can configure the mail texts for mails that are sent out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s and, when appropriate, %(commenturl)s and %(commenttext)s."
+msgstr "Hier werden die Texte der Benachrichtungsmails konfiguriert, die an Ersteller und Abonnenten von Foreninhalten bei \xc3\x84nderungen verschickt werden. Folgende Variablen werden durch die entsprechenden Inhalte des Threads ersetzt: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s, %(commenturl)s und %(commenttext)s (falls sinnvoll)."
 
 #: ./interfaces.py:76
 msgid "Mail signature"
@@ -50,23 +50,23 @@ msgstr "Signatur der Email"
 msgid "Mail subject"
 msgstr "Betreff"
 
-#: ./interfaces.py:100
+#: ./interfaces.py:105
 msgid "Mail text to send to subscribers of a thread where a comment has been added"
 msgstr "Text der Benachrichtigungsmail an Threadabonnenten, wenn ein Kommentar hinzugef\xc3\xbcgt wurde"
 
-#: ./interfaces.py:96
+#: ./interfaces.py:99
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr "Text der Benachrichtigungsmail an Threadabonnenten, wenn ein Kommentar ge\xc3\xa4ndert wurde"
 
-#: ./interfaces.py:92
+#: ./interfaces.py:94
 msgid "Mail text when a comment has been deleted"
 msgstr "Text der Benachrichtungsmail beim L\xc3\xb6schen eines Beitrags"
 
-#: ./interfaces.py:84
+#: ./interfaces.py:86
 msgid "Mail text when a comment has been edited"
 msgstr "Text der Benachrichtungsmail beim \xc3\x84ndern eines Beitrags"
 
-#: ./interfaces.py:88
+#: ./interfaces.py:90
 msgid "Mail text when a thread has been moved to another board"
 msgstr "Text der Benachrichtungsmail wenn ein Thread in ein anders Forum verschoben wurde"
 
@@ -98,7 +98,7 @@ msgstr "Betreff"
 msgid "Subscribe"
 msgstr "Thema abonnieren"
 
-#: ./interfaces.py:86
+#: ./interfaces.py:88
 msgid "Thread moved"
 msgstr "Thema verschoben"
 

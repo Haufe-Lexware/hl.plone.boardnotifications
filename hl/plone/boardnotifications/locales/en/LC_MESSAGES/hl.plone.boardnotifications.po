@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-02-06 10:12+0000\n"
+"POT-Creation-Date: 2013-03-25 12:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,24 +22,24 @@ msgstr ""
 msgid "Board Notifications"
 msgstr ""
 
-#: ./interfaces.py:98
+#: ./interfaces.py:103
 msgid "Comment added (Subscriber)"
 msgstr ""
 
-#: ./interfaces.py:90
+#: ./interfaces.py:92
 msgid "Comment deleted"
 msgstr ""
 
-#: ./interfaces.py:82
+#: ./interfaces.py:84
 msgid "Comment edited"
 msgstr ""
 
-#: ./interfaces.py:94
+#: ./interfaces.py:97
 msgid "Comment edited (Subscriber)"
 msgstr ""
 
 #: ./notify.py:130
-msgid "Here you can configure the mail texts for mails that are send out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s %(threadurl)s, %(boardtitle)s, %(mailsignature)s %(salutation)s and, when appropriate, %(commenturl)s"
+msgid "Here you can configure the mail texts for mails that are sent out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s and, when appropriate, %(commenturl)s and %(commenttext)s."
 msgstr ""
 
 #: ./interfaces.py:76
@@ -50,23 +50,23 @@ msgstr ""
 msgid "Mail subject"
 msgstr ""
 
-#: ./interfaces.py:100
+#: ./interfaces.py:105
 msgid "Mail text to send to subscribers of a thread where a comment has been added"
 msgstr ""
 
-#: ./interfaces.py:96
+#: ./interfaces.py:99
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr ""
 
-#: ./interfaces.py:92
+#: ./interfaces.py:94
 msgid "Mail text when a comment has been deleted"
 msgstr ""
 
-#: ./interfaces.py:84
+#: ./interfaces.py:86
 msgid "Mail text when a comment has been edited"
 msgstr ""
 
-#: ./interfaces.py:88
+#: ./interfaces.py:90
 msgid "Mail text when a thread has been moved to another board"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr "Subscribe to thread"
 
-#: ./interfaces.py:86
+#: ./interfaces.py:88
 msgid "Thread moved"
 msgstr ""
 
