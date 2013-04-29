@@ -281,11 +281,15 @@ class Notifier(Persistent):
         if not self.subscription_comment_edited_text or not self.subscription_comment_edited_text.strip():
             return
         thread = comment.getConversation()
+        forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
+        subscribers = set(
+                subscriptions.subscribers_for(thread) | 
+                subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
@@ -303,11 +307,14 @@ class Notifier(Persistent):
         if not self.subscription_comment_added_text or not self.subscription_comment_added_text.strip():
             return
         thread = comment.getConversation()
+        forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
-        subscribers = subscriptions.subscribers_for(thread)
+        subscribers = set(
+                subscriptions.subscribers_for(thread) | 
+                subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
