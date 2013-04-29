@@ -287,9 +287,7 @@ class Notifier(Persistent):
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
-        subscribers = set(
-                subscriptions.subscribers_for(thread) | 
-                subscriptions.subscribers_for(forum))
+        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
@@ -312,9 +310,7 @@ class Notifier(Persistent):
         di['commenturl'] = comment.absolute_url()
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
-        subscribers = set(
-                subscriptions.subscribers_for(thread) | 
-                subscriptions.subscribers_for(forum))
+        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
