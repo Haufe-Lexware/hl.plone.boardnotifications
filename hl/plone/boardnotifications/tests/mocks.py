@@ -47,6 +47,9 @@ class MemberDataMock(UserDict):
 
     getProperty = UserDict.__getitem__
 
+    def __hash__(self):
+        return hash(self['id'])
+
     def getId(self):
         return self['id']
 
