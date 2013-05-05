@@ -74,7 +74,7 @@ class MailIn(Five.BrowserView):
                 if target is None:
                     target = obj
                 elif (obj.meta_type == 'PloneboardComment' and
-                        target.meta_type 'PloneboardConversation'):
+                        target.meta_type == 'PloneboardConversation'):
                     # More specific wins
                     target = obj
             if not target:
