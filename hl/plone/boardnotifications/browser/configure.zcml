@@ -47,5 +47,12 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    for="Products.Ploneboard.interfaces.IForum"
+    name="mailin"
+    class=".views.MailIn"
+    permission="zope2.View"
+    />
+
 </configure>
 
