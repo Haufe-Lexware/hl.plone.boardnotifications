@@ -33,4 +33,10 @@
       class=".notify.NotifierControlPanel"
       permission="cmf.ManagePortal" />
 
+  <browser:page
+      name="boardnotifier-mailin"
+      for="hl.plone.boardnotifications.interfaces.ISubscriptions"
+      class=".mailin.Receiver"
+      permission="zope2.View" />
+
 </configure>
