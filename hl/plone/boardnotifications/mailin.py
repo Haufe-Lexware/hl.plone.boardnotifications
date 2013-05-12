@@ -1,5 +1,7 @@
+import re
 import base64
 import logging
+import urlparse
 from email.Errors import HeaderParseError
 from email import message_from_string
 try:
@@ -30,13 +32,14 @@ from hl.plone.boardnotifications.config import FAKE_MANAGER
 from hl.plone.boardnotifications.config import ADD_ATTACHMENTS
 
 logger = logging.getLogger('boardnotifier-mailin')
+URL_RE = re.compile(r'\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))')
 
 # Ripped bodily from poimail.py, thank you Maurits!
 
 class Receiver(BrowserView):
 
     def __call__(self):
-        mail = self.request.get('Mail')
+        mail = self.request.get('Mail', '')
         mail = mail.strip()
         if not mail:
             msg = u'No mail found in request'
@@ -54,8 +57,9 @@ class Receiver(BrowserView):
             msg = u'No From or To address found in request'
             logger.warn(msg)
             return msg
-        # Pick the first one; strange anyway if there would be more.
-        from_name, from_address = from_addresses[0]
+        for from_name, from_address in from_addresses:
+            if from_address:
+                break
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         email_from_address = portal.getProperty('email_from_address')
         if from_address.lower() == email_from_address.lower():
@@ -78,16 +82,14 @@ class Receiver(BrowserView):
         logger.debug("Forum at %s received mail from %r to %r with "
                      "subject %r", self.context.absolute_url(),
                      from_address, to_addresses, subject)
-        details, mimetype = self.get_details_and_mimetype(message)
-        if not details:
-            details = "Warning: no details found in email"
+        text, mimetype = self.get_text_and_mimetype(message)
+        if not text:
+            text = "Warning: no text found in email"
             mimetype = 'text/plain'
-            logger.warn(details)
+            logger.warn(text)
         logger.debug('Got payload with mimetype %s from email.', mimetype)
 
-        # Create an attachment from the complete email.  Somehow the
-        # result is nicer when it is put in a response than in an
-        # issue.  Not much we can do about that probably.
+        # Create an attachment from the complete email.
         attachment = File('email.eml', 'E-mail', mail)
 
         tags = self.get_tags(message)
@@ -101,47 +103,24 @@ class Receiver(BrowserView):
         # Possibly switch to a different user.
         self.switch_user(from_address)
 
-        target = self.find_conversation_or_thread(subject, tags, message)
+        if ADD_ATTACHMENTS:
+            attachments = self.get_attachments(message)
+            attachments.append(attachment)
+        else:
+            attachments = [attachment]
+
+        target = self.find_conversation_or_thread(subject, text, tags, message)
         if target is None:
-            # manager = self.get_manager(message, tags)
-            # logger.debug("Determined manager: %s", manager)
-            # if not subject:
-            #     subject = '[no subject]'
-            # try:
-            #     issue = self.create_post(
-            #         title=subject, details=details, contactEmail=from_address,
-            #         attachment=attachment, responsibleManager=manager,
-            #         subject=tags)
-            # except Unauthorized, exc:
-            #     logger.error(u'Unauthorized to create issue: %s', exc)
-            #     return u'Unauthorized'
-            # logger.info('Created issue from email at %s', issue.absolute_url())
+            # We don't allow creating conversations from mail, only replies
             logger.info('Could not find something to reply to')
         else:
             try:
-                self.add_response(target, text=details, mimetype=mimetype,
-                                  attachment=attachment)
+                self.add_response(target, from_address, subject, text, mimetype, attachments)
             except Unauthorized, exc:
                 logger.error(u'Unauthorized to add response: %s', exc)
                 return u'Unauthorized'
             logger.info('Added mail as response to target %s',
                         target.absolute_url())
-
-        if ADD_ATTACHMENTS:
-            attachments = self.get_attachments(message)
-            for name, att in attachments:
-                logger.info("Adding attachment as response: %r, length %d",
-                            name, len(att))
-                attachment = File(name, name, att)
-                try:
-                    self.add_response(target, text='', mimetype='text/plain',
-                                      attachment=attachment)
-                except Unauthorized, exc:
-                    # We mark this as unauthorized, but the main target
-                    # or response is already created, which is
-                    # actually fine.
-                    logger.error(u'Unauthorized to add response: %s', exc)
-                    return u'Unauthorized'
 
         # Restore original security manager
         setSecurityManager(sm)
@@ -167,6 +146,7 @@ class Receiver(BrowserView):
         elevate privileges when the request originates on the local
         computer.
         """
+        import pdb; pdb.set_trace()
         sm = getSecurityManager()
         remote_address = self.request.get('HTTP_X_FORWARDED_FOR')
         if not remote_address:
@@ -294,11 +274,15 @@ class Receiver(BrowserView):
         # TODO: do forum posts have tags?
         return []
 
-    def add_response(self, target, text, mimetype, attachment):
+    def add_response(self, target, from_address, subject, text, mimetype, attachments):
         # TODO: add all the attachments at once
-        target.addComment(subject, text, creator=None, files=[attachment])
+        # target.addComment(subject, text, creator=None, files=[attachment])
+        if target.meta_type == 'PloneboardConversation':
+            target.addComment('answer via mail'+subject, text, creator=from_address, files=attachments)
+        elif target.meta_type == 'PloneboardComment':
+            target.addReply('answer via mail'+subject, text, creator=from_address, files=attachments)
 
-    def find_conversation_or_thread(self, subject, tags, message):
+    def find_conversation_or_thread(self, subject, text, tags, message):
         """Find a conversation or thread for which this email is a response.
 
         Match based on an URL in the mail.
@@ -306,11 +290,24 @@ class Receiver(BrowserView):
         The message is passed in as argument as well, to make
         alternative schemes possible.
         """
-        # parse out the URL
-        return 
+        target = None
+        body = message.get_payload()
+        for match in URL_RE.finditer(body):
+            url = match.group(0)
+            path = urlparse.urlparse(url).path
+            obj = self.context.restrictedTraverse(path)
+            if obj.meta_type in ['PloneboardComment',
+                    'PloneboardConversation']:
+                if target is None:
+                    target = obj
+                elif (obj.meta_type == 'PloneboardComment' and
+                        target.meta_type == 'PloneboardConversation'):
+                    # More specific wins
+                    target = obj
+        return target
 
-    def get_details_and_mimetype(self, message):
-        """Get text and mimetype for the details field of the issue.
+    def get_text_and_mimetype(self, message):
+        """Get text and mimetype for the body of the response.
 
         The mimetype is not always needed, but it is good to know
         whether we have html or plain text.
@@ -334,7 +331,7 @@ class Receiver(BrowserView):
             return payload, mimetype
         for part in payload:
             if part.is_multipart():
-                text, mimetype = self.get_details_and_mimetype(part)
+                text, mimetype = self.get_text_and_mimetype(part)
             else:
                 text, mimetype = self.part_to_text_and_mimetype(part)
             text = text.strip()
@@ -396,28 +393,6 @@ class Receiver(BrowserView):
         """ Create a post in the given board, and perform workflow and
         rename-after-creation initialisation.
         """
-        # tracker = self.context
-        # newId = tracker.generateUniqueId('PoiIssue')
-        # _createObjectByType('PoiIssue', tracker, newId,
-        #                     **kwargs)
-        # issue = getattr(tracker, newId)
-        # issue._renameAfterCreation()
-
-        # # Some fields have no effect when set with the above
-        # # _createObjectByType call.
-        # for fieldname, value in kwargs.items():
-        #     field = issue.getField(fieldname)
-        #     if field:
-        #         field.set(issue, value)
-
-        # # Creation has finished, so we remove the archetypes flag for
-        # # that, otherwise the issue gets renamed when someone edits
-        # # it.
-        # issue.unmarkCreationFlag()
-        # notify(ObjectInitializedEvent(issue))
-        # workflow_tool = getToolByName(tracker, 'portal_workflow')
-        # # The 'post' transition is only available when the issue is valid.
-        # workflow_tool.doActionFor(issue, 'post')
-        # issue.reindexObject()
-        # return issue
+        # We only allow replies to notification, at least for now.
+        pass
 
