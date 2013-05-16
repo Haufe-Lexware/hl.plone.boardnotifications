@@ -146,7 +146,6 @@ class Receiver(BrowserView):
         elevate privileges when the request originates on the local
         computer.
         """
-        import pdb; pdb.set_trace()
         sm = getSecurityManager()
         remote_address = self.request.get('HTTP_X_FORWARDED_FOR')
         if not remote_address:
