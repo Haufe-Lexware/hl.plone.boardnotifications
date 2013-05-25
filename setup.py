@@ -29,7 +29,9 @@ setup(name='hl.plone.boardnotifications',
           # -*- Extra requirements: -*-
       ],
       extras_require={
-          'mailin': ['smtp2zope']
+          'mailin': [
+              'smtp2zope',
+              ]
           },
       entry_points="""
       # -*- Entry points: -*-

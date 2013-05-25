@@ -58,11 +58,11 @@ class NotifierTests(unittest.TestCase):
                                   title='test thread',
                                   forum=forum,
                                   creator=md1['id'],
-                                  commenttext='Awesome!')
+                                  commenttext='Awesome first comment!')
         comment = CommentMock(id='testcomment',
                               title='Re: test',
                               conversation=thread,
-                              text='Awesome!',
+                              text='Awesome second comment!',
                               creator=md2['id'])
         thread.comments.append(comment)
         thread._setObject(comment.id, comment)
@@ -96,7 +96,7 @@ class NotifierTests(unittest.TestCase):
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
-                              text='Awesome!',
+                              text='Awesome third comment!',
                               creator='123456')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
@@ -174,12 +174,11 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment text, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         self.app.portal_membership.authenticated = '123456'
         n.comment_edited(self.app.testforum.testthread.testthread)
         got = len(mh.emails)  
-        mh.emails = []
         self.failUnless(got==0, 'no mail should be sent to the creator of a comment if he edits it.')
         self.app.portal_membership.authenticated = None
         n.comment_edited_text = None
@@ -223,7 +222,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']=='Awesome second comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         n.comment_deleted_text = None
         n.comment_deleted(self.app.testforum.testthread.testcomment)
@@ -273,7 +272,7 @@ class NotifierTests(unittest.TestCase):
             self.failUnless(got['salutation'] in ['Sehr geehrte Frau Liese M=C3=BCller', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
             self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
             self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-            self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
+            self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
