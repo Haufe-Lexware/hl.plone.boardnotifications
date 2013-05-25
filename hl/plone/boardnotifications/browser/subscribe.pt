@@ -4,7 +4,7 @@
 <tal:block define="subs view/is_subscribed;
         forum_subs view/is_subscribed_to_forum;
         viewing_forum python:context.portal_type == 'PloneboardForum'">
-  <tal:forum tal:condition="python:viewing_forum and forum_subs">
+  <tal:forum tal:condition="python:viewing_forum">
     <tal:subscribe tal:condition="forum_subs">
         <a name="subscribe" tal:attributes="href string:${here/absolute_url}/unsubscribe" i18n:translate="">Unsubscribe</a>
     </tal:subscribe>
