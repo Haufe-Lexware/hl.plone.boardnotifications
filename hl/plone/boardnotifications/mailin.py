@@ -294,7 +294,7 @@ class Receiver(BrowserView):
         for match in URL_RE.finditer(body):
             url = match.group(0)
             path = urlparse.urlparse(url).path
-            obj = self.context.restrictedTraverse(path)
+            obj = self.context.unrestrictedTraverse(path[1:])
             if obj.meta_type in ['PloneboardComment',
                     'PloneboardConversation']:
                 if target is None:
