@@ -290,7 +290,15 @@ class Receiver(BrowserView):
         alternative schemes possible.
         """
         target = None
-        body = message.get_payload()
+        parts = message.get_payload()
+        # TODO: deal with multiple parts of the same type
+        parts_content_type = dict([
+            (p.get_content_type(), p.get_payload(decode=True))
+            for p in parts])
+        body = parts_content_type.get('text/plain', None)
+        if not body:
+            # TODO: strip HTML
+            body = parts_content_type.get('text/html')
         for match in URL_RE.finditer(body):
             url = match.group(0)
             path = urlparse.urlparse(url).path
