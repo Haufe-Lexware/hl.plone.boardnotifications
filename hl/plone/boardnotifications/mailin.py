@@ -292,16 +292,7 @@ class Receiver(BrowserView):
         alternative schemes possible.
         """
         target = None
-        parts = message.get_payload()
-        # TODO: deal with multiple parts of the same type
-        parts_content_type = dict([
-            (p.get_content_type(), p.get_payload(decode=True))
-            for p in parts])
-        body = parts_content_type.get('text/plain', None)
-        if not body:
-            # TODO: strip HTML
-            body = parts_content_type.get('text/html')
-        for match in URL_RE.finditer(body):
+        for match in URL_RE.finditer(text):
             url = match.group(0)
             path = urlparse.urlparse(url).path
             obj = self.context.unrestrictedTraverse(path[1:])
@@ -351,11 +342,11 @@ class Receiver(BrowserView):
 
     def part_to_text_and_mimetype(self, part):
         if part.get_content_type() == 'text/plain':
-            return part.get_payload(), 'text/plain'
+            return part.get_payload(decode=True), 'text/plain'
         tt = getToolByName(self.context, 'portal_transforms')
         if part.get_content_type() == 'text/html':
             mimetype = 'text/x-html-safe'
-            safe = tt.convertTo(mimetype, part.get_payload(),
+            safe = tt.convertTo(mimetype, part.get_payload(decode=True),
                                 mimetype='text/html')
             # Poi responses fail on view when you have the x-html-safe
             # mime type.  Fixed in Poi 1.2.12 (unreleased) but hey, we
@@ -365,7 +356,7 @@ class Receiver(BrowserView):
             # This might not work in all cases, e.g. for attachments,
             # but that is not tested yet.
             mimetype = 'text/plain'
-            safe = tt.convertTo(mimetype, part.get_payload())
+            safe = tt.convertTo(mimetype, part.get_payload(decode=True))
         if safe is None:
             logger.warn("Converting part to mimetype %s failed.", mimetype)
             return u'', 'text/plain'
@@ -374,7 +365,7 @@ class Receiver(BrowserView):
     def get_attachments(self, message):
         """Get attachments.
         """
-        payload = message.get_payload()
+        payload = message.get_payload(decode=True)
         if not message.is_multipart():
             mimetype = message.get_content_type()
             if mimetype.startswith('text'):
