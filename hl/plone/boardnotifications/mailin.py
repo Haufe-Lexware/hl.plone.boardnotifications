@@ -276,6 +276,8 @@ class Receiver(BrowserView):
     def add_response(self, target, from_address, subject, text, mimetype, attachments):
         # TODO: add all the attachments at once
         # target.addComment(subject, text, creator=None, files=[attachment])
+        # TODO: fix quick and dirty text formatting
+        text = "<pre>%s</pre>" % text
         if target.meta_type == 'PloneboardConversation':
             target.addComment('answer via mail'+subject, text, creator=from_address, files=attachments)
         elif target.meta_type == 'PloneboardComment':
