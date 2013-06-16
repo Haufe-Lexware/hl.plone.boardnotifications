@@ -295,7 +295,11 @@ class Receiver(BrowserView):
         for match in URL_RE.finditer(text):
             url = match.group(0)
             path = urlparse.urlparse(url).path
-            obj = self.context.unrestrictedTraverse(path[1:])
+            try:
+                obj = self.context.unrestrictedTraverse(path[1:])
+            except AttributeError:
+                # Skip bad URLs
+                continue
             if obj.meta_type in ['PloneboardComment',
                     'PloneboardConversation']:
                 if target is None:
