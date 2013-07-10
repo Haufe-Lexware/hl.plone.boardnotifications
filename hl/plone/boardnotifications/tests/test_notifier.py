@@ -44,19 +44,25 @@ class NotifierTests(unittest.TestCase):
                              salutation='Frau',
                              lastname='M\xc3\xbcller',
                              firstname='Liese')
+        md3 = MemberDataMock(id='123321',
+                             email='nobody@haufe-lexware.com',
+                             salutation='Frau',
+                             lastname='Body',
+                             firstname='No')
         mtool = queryUtility(IMembershipTool)
         mtool.members[md1['id']] = md1
         mtool.members[md2['id']] = md2
+        mtool.members[md3['id']] = md3
         forum = ForumMock('testforum', 'test forum')
         thread = ConversationMock(id='testthread',
                                   title='test thread',
                                   forum=forum,
                                   creator=md1['id'],
-                                  commenttext='Awesome!')
+                                  commenttext='Awesome first comment!')
         comment = CommentMock(id='testcomment',
                               title='Re: test',
                               conversation=thread,
-                              text='Awesome!',
+                              text='Awesome second comment!',
                               creator=md2['id'])
         thread.comments.append(comment)
         thread._setObject(comment.id, comment)
@@ -90,7 +96,7 @@ class NotifierTests(unittest.TestCase):
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
-                              text='Awesome!',
+                              text='Awesome third comment!',
                               creator='123456')
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
@@ -107,9 +113,9 @@ class NotifierTests(unittest.TestCase):
             self.failUnless(got['boardtitle']=='test forum', 'unexpected board title, got "%s"' % got['boardtitle'])
             self.failUnless(got['signature']=='signature', 'unexpected signature')
             if mail[0][0].get('To') == 'max.mustermann@haufe-lexware.com':
-                self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
+                self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
             else:
-                self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
+                self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexpected salutation, got "%s"' % got['salutation'])
         mh.emails = []
         n.thread_moved_text = None
         n.thread_moved(self.app.testforum.testthread)
@@ -153,7 +159,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['threadurl']=='http://nohost/testforum/testthread', 'unexpected thread url, got "%s"' % got['threadurl'])
         self.failUnless(got['boardtitle']=='test forum', 'unexpected board title, got "%s"' % got['boardtitle'])
         self.failUnless(got['signature']=='signature', 'unexpected signature')
-        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
 
     def test_comment_edited(self):
         n = self._make_one()
@@ -165,15 +171,14 @@ class NotifierTests(unittest.TestCase):
         mail = mh.emails[-1]
         got = {}
         got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment text, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         self.app.portal_membership.authenticated = '123456'
         n.comment_edited(self.app.testforum.testthread.testthread)
         got = len(mh.emails)  
-        mh.emails = []
         self.failUnless(got==0, 'no mail should be sent to the creator of a comment if he edits it.')
         self.app.portal_membership.authenticated = None
         n.comment_edited_text = None
@@ -214,10 +219,10 @@ class NotifierTests(unittest.TestCase):
         mail = mh.emails[-1]
         got = {}
         got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']=='Awesome second comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         n.comment_deleted_text = None
         n.comment_deleted(self.app.testforum.testthread.testcomment)
@@ -250,6 +255,9 @@ class NotifierTests(unittest.TestCase):
     def test_subscription_comment_edited(self):
         n = self._make_one()
         subscriptions = self._register_subscriptions()
+        # Subscribe to the forum
+        subscriptions.add(self.app.testforum, '123321')
+        # Subscribe to a thread
         subscriptions.add(self.app.testforum.testthread, '654321')
         n.subscription_comment_edited_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\ncommenttext:%(commenttext)s\nsignature:%(mailsignature)s'
         n.signature='signature'
@@ -257,14 +265,14 @@ class NotifierTests(unittest.TestCase):
         mh = queryUtility(IMailHost)
         mh.emails = []
         n.subscription_comment_edited(self.app.testforum.testthread.testthread)
-        self.failUnless(len(mh.emails)==1, 'expected one mail for one subscriber')
-        mail = mh.emails[-1]
-        got = {}
-        got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
-        self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
-        self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome!', 'unexpected comment url, got "%s"' % got['commenttext'])
+        self.failUnless(len(mh.emails)==2, 'expected two mails for two subscribers')
+        for mail in mh.emails:
+            got = {}
+            got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+            self.failUnless(got['salutation'] in ['Sehr geehrte Frau Liese M=C3=BCller', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
+            self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
+            self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
+            self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
@@ -275,12 +283,12 @@ class NotifierTests(unittest.TestCase):
         subscriptions.add(self.app.testforum.testthread, '123456')
         mh.emails = []   
         n.subscription_comment_edited(self.app.testforum.testthread.testcomment2)
-        got = len(mh.emails)
-        self.failUnless(got==1, 'expected one email, got %s' % got)
-        mail = mh.emails[-1]
-        got = {}
-        got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(len(mh.emails)==2, 'expected two mails for two subscribers')
+        for mail in mh.emails:
+            mail = mh.emails[-1]
+            got = {}
+            got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+            self.failUnless(got['salutation'] in ['Sehr geehrte Frau Liese M=C3=BCller', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
         mh.emails = []
         n.subscription_comment_edited_text = None
         n.subscription_comment_edited(self.app.testforum.testthread.testthread)
@@ -300,6 +308,9 @@ class NotifierTests(unittest.TestCase):
     def test_subscription_comment_added(self):
         n = self._make_one()
         subscriptions = self._register_subscriptions()
+        # Subscribe to the forum
+        subscriptions.add(self.app.testforum, '123321')
+        # Subscribe to a thread
         subscriptions.add(self.app.testforum.testthread, '123456')
         n.subscription_comment_added_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
         n.signature='signature'
@@ -307,12 +318,12 @@ class NotifierTests(unittest.TestCase):
         mh = queryUtility(IMailHost)
         mh.emails = []
         n.subscription_comment_added(self.app.testforum.testthread.testcomment)
-        mail = mh.emails[-1]
-        got = {}
-        got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
-        self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
-        self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
+        for mail in mh.emails:
+            got = {}
+            got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+            self.failUnless(got['salutation'] in ['Sehr geehrter Herr Max Mustermann', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
+            self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
+            self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
         # a user will not be notified if he is the author of the comment
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
@@ -325,11 +336,11 @@ class NotifierTests(unittest.TestCase):
         mh.emails = [] 
         n.subscription_comment_added(self.app.testforum.testthread.testcomment2)
         got = len(mh.emails)
-        self.failUnless(got==1, 'expected one email, got %s' % got)
-        mail = mh.emails[-1]
-        got = {}
-        got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
-        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(got==2, 'expected two emails, got %s' % got)
+        for mail in mh.emails:
+            got = {}
+            got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+            self.failUnless(got['salutation'] in ['Sehr geehrter Herr Max Mustermann', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
         mh.emails = [] 
         n.subscription_comment_added_text = None
         n.subscription_comment_added(self.app.testforum.testthread.testcomment)
@@ -359,7 +370,7 @@ class NotifierTests(unittest.TestCase):
         msg = mail[0][0]
         got.update([tuple(kv.split(':', 1)) for kv in msg.as_string().split('\n\n')[1].split('\n')])
         self.failUnless(msg['Subject']=='Changes in http://nohost/testforum/testthread', 'unexpected email subject, got "%s"' % msg['Subject'])
-        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexcpected salutation, got "%s"' % got['salutation'])
+        self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
         self.failUnless(got['signature']=='signature', 'unexpected signature, got "%s"' % got['signature'])

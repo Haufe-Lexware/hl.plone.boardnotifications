@@ -24,10 +24,21 @@ class Unsubscribe(Five.BrowserView):
         subscriptions.remove(self.context, mem)
         self.request.response.redirect(self.context.absolute_url() + '#subscribe')
 
+
 class SubscriptionViewlet(ViewletBase):
 
     index = ViewPageTemplateFile('subscribe.pt')
 
+    def is_subscribed_to_forum(self):
+        subscriptions = getUtility(ISubscriptions)
+        if self.context.portal_type == 'PloneboardForum':
+            forum = self.context
+        else:
+            thread = self.context.getConversation(self.context.id)
+            forum = thread.getForum()
+        return subscriptions.check_subscriber(forum)
+
     def is_subscribed(self):
         subscriptions = getUtility(ISubscriptions)
         return subscriptions.check_subscriber(self.context)
+

@@ -11,6 +11,14 @@
     permission="zope2.View"
     />
 
+  <browser:viewlet
+    name="plone.abovecontenttitle.documentactions"
+    for="Products.Ploneboard.content.PloneboardForum.PloneboardForum"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    class=".views.SubscriptionViewlet"
+    permission="zope2.View"
+    />
+
   <browser:page
     for="Products.Ploneboard.interfaces.IConversation"
     name="subscribe"
@@ -20,6 +28,20 @@
 
   <browser:page
     for="Products.Ploneboard.interfaces.IConversation"
+    name="unsubscribe"
+    class=".views.Unsubscribe"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="Products.Ploneboard.interfaces.IForum"
+    name="subscribe"
+    class=".views.Subscribe"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="Products.Ploneboard.interfaces.IForum"
     name="unsubscribe"
     class=".views.Unsubscribe"
     permission="zope2.View"

@@ -1,4 +1,8 @@
 import logging
+import formatter
+import StringIO
+from lxml import html
+from htmllib import HTMLParser
 from persistent import Persistent
 from persistent.mapping import PersistentMapping
 from zope.component import adapts, getUtility, queryUtility
@@ -156,6 +160,36 @@ class Notifier(Persistent):
         self.thread_moved_text = None
         self._salutations = PersistentMapping()
 
+    def create_plaintext_message(self, text):
+        """ Create a plain-text-message by parsing the html
+            and attaching links as endnotes
+
+            Modified from EasyNewsletter/content/ENLIssue.py
+        """
+        # This reflows text which we don't want, but it creates
+        # parser.anchorlist which we do want.
+        textout = StringIO.StringIO()
+        formtext = formatter.AbstractFormatter(formatter.DumbWriter(textout))
+        parser = HTMLParser(formtext)
+        parser.feed(text)
+        parser.close()
+
+        # append the anchorlist at the bottom of a message
+        # to keep the message readable.
+        counter = 0
+        anchorlist = "\n\n" + '----' + "\n\n"
+        for item in parser.anchorlist:
+            counter += 1
+            anchorlist += "[%d] %s\n" % (counter, item)
+
+        # This reflows text:
+        # text = textout.getvalue() + anchorlist
+        # This just strips tags, no reflow
+        text = html.fromstring(text).text_content()
+        text += anchorlist
+        del textout, formtext, parser, anchorlist
+        return text
+
     def get_salutations(self):
         return self._salutations
 
@@ -184,6 +218,7 @@ class Notifier(Persistent):
         headers.update([tp for tp in HeaderParser().parsestr(text.encode(self._encoding())).items() if tp[0] in self.valid_headers])
         if headers.keys():
             text = '\n\n'.join(text.split('\n\n')[1:])
+        text = self.create_plaintext_message(text)
         msg = MIMEText(text, _charset=self._encoding())
         msg['Subject'] = self.subject
         msg['From'] = getUtility(ISiteRoot).email_from_address
@@ -281,11 +316,13 @@ class Notifier(Persistent):
         if not self.subscription_comment_edited_text or not self.subscription_comment_edited_text.strip():
             return
         thread = comment.getConversation()
+        forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
+        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
@@ -303,11 +340,12 @@ class Notifier(Persistent):
         if not self.subscription_comment_added_text or not self.subscription_comment_added_text.strip():
             return
         thread = comment.getConversation()
+        forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
         di['commenttext'] = comment.getText()
         subscriptions = getUtility(ISubscriptions)
-        subscribers = subscriptions.subscribers_for(thread)
+        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:

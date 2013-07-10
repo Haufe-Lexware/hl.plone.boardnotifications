@@ -28,6 +28,11 @@ setup(name='hl.plone.boardnotifications',
           'Products.Ploneboard >= 3.0',
           # -*- Extra requirements: -*-
       ],
+      extras_require={
+          'mailin': [
+              'smtp2zope',
+              ]
+          },
       entry_points="""
       # -*- Entry points: -*-
 
