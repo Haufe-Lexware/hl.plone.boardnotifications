@@ -105,7 +105,7 @@ class Receiver(BrowserView):
 
         if ADD_ATTACHMENTS:
             attachments = self.get_attachments(message)
-            attachments.append(attachment)
+            attachments = [File(filename, filename, data) for filename, data in attachments]
         else:
             attachments = [attachment]
 
@@ -369,7 +369,7 @@ class Receiver(BrowserView):
     def get_attachments(self, message):
         """Get attachments.
         """
-        payload = message.get_payload(decode=True)
+        payload = message.get_payload()
         if not message.is_multipart():
             mimetype = message.get_content_type()
             if mimetype.startswith('text'):
