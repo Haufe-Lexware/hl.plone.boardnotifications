@@ -12,20 +12,14 @@ except ImportError:
     from email import Utils as email_utils
 from email import Header
 
-from zope.event import notify
 from AccessControl import Unauthorized
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from OFS.Image import File
-from Products.Archetypes.event import ObjectInitializedEvent
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
-from Products.CMFPlone.utils import _createObjectByType
-from Products.Ploneboard.interfaces import IForum
-from Products.Ploneboard.interfaces import IConversation
-from Products.Ploneboard.content import PloneboardConversation
 
 from hl.plone.boardnotifications.config import LISTEN_ADDRESSES
 from hl.plone.boardnotifications.config import FAKE_MANAGER
