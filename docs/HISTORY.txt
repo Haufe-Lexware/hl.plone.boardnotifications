@@ -4,7 +4,9 @@ Changelog
 0.6dev (unreleased)
 -------------------
 
-- add 'commenttext' as a notification mail option (thanks jean)
+- add 'commenttext' as a notification mail option (jean)
+- forum subscription (jean)
+- add mail-in functionality (jean)
 
 0.5 (11.2.2013)
 -------------------
