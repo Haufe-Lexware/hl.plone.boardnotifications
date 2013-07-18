@@ -33,11 +33,4 @@
       class=".notify.NotifierControlPanel"
       permission="cmf.ManagePortal" />
 
-  <browser:page
-    for="Products.Ploneboard.interfaces.IPloneboard"
-    name="mailin"
-    class=".mailin.Receiver"
-    permission="zope2.View"
-    />
-
 </configure>
