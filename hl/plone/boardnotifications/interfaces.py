@@ -1,5 +1,5 @@
 from zope.interface import Interface
-from zope.schema import Text, TextLine
+from zope.schema import Bool, BytesLine, List, Text, TextLine
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('hl.plone.boardnotifications')
 
@@ -93,15 +93,31 @@ class INotifierSchema(Interface):
             required=False,
             description=_(u'Mail text when a comment has been deleted'))
 
-    subscription_comment_edited_text = Text(
-            title=_(u'Comment edited (Subscriber)'),
+    subscription_comment_edited_text = Text(title=_(u'Comment edited (Subscriber)'),
             required=False,
             description=_(u'Mail text to send to subscribers of a thread where '
                 'a comment has been edited'))
 
-    subscription_comment_added_text = Text(
-            title=_(u'Comment added (Subscriber)'),
+    subscription_comment_added_text = Text(title=_(u'Comment added (Subscriber)'),
             required=False,
             description=_(u'Mail text to send to subscribers of a thread where '
                 'a comment has been added'))
+
+    mailin_enabled = Bool(title=_(u'Enable mail-in support'), 
+            default=False,
+            description=_(u'Check to enable mail-in support (needs smtp2zope).'))
+
+    fake_manager = Bool(title=_(u'Mail-in: Fake Manager role?'), 
+            default=True,
+            description=_(u'Use Manager role during mail-in request.'))
+
+    listen_addresses = List(title=_(u'Addresses to listen for mail'),
+        description = _(u'Specify network addresses from which mail-in requests can originate, one by line.'),
+        value_type = BytesLine(), 
+        default = [u'127.0.0.1',], 
+        required = False) 
+
+    add_attachments = Bool(title=_(u'Mail-in: Add attachments?'), 
+            default=True,
+            description=_(u'Check to allow uploading of attachments during mail-in.'))
 

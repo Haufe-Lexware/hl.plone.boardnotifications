@@ -12,27 +12,39 @@ except ImportError:
     from email import Utils as email_utils
 from email import Header
 
+from zExceptions import NotFound
 from AccessControl import Unauthorized
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from OFS.Image import File
+from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 
-from hl.plone.boardnotifications.config import LISTEN_ADDRESSES
-from hl.plone.boardnotifications.config import FAKE_MANAGER
-from hl.plone.boardnotifications.config import ADD_ATTACHMENTS
+from hl.plone.boardnotifications.interfaces import INotifier
 
-logger = logging.getLogger('boardnotifier-mailin')
+logger = logging.getLogger('hl.plone.boardnotifications.mailin')
 URL_RE = re.compile(r'\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))')
 
 # Ripped bodily from poimail.py, thank you Maurits!
 
+
 class Receiver(BrowserView):
 
+    def __init__(self, context, request):
+        super(Receiver, self).__init__(context, request)
+        notifier = getUtility(INotifier)
+        self.enabled = notifier.mailin_enabled
+        self.listen_addresses = notifier.listen_addresses
+        self.fake_manager = notifier.fake_manager
+        self.add_attachments = notifier.add_attachments
+
     def __call__(self):
+        if not self.enabled:
+            logger.debug('received mail-in request, but mail-in not enabled')
+            raise NotFound
         mail = self.request.get('Mail', '')
         mail = mail.strip()
         if not mail:
@@ -97,7 +109,7 @@ class Receiver(BrowserView):
         # Possibly switch to a different user.
         self.switch_user(from_address)
 
-        if ADD_ATTACHMENTS:
+        if self.add_attachments:
             attachments = self.get_attachments(message)
             attachments = [File(filename, filename, data) for filename, data in attachments]
         else:
@@ -147,7 +159,7 @@ class Receiver(BrowserView):
             # at least an empty string, also when the key is not in
             # the request, so a default value would be ignored.
             remote_address = self.request.get('REMOTE_ADDR')
-        if remote_address not in LISTEN_ADDRESSES:
+        if remote_address not in self.listen_addresses:
             return
 
         # First, see if we can get an existing user based on the From
@@ -188,7 +200,7 @@ class Receiver(BrowserView):
                 return
 
         # See if this user already has the Manager role, otherwise add it.
-        if FAKE_MANAGER and not user.allowed(self.context, ('Manager', )):
+        if self.fake_manager and not user.allowed(self.context, ('Manager', )):
             logger.debug("Faking Manager role for user %s", user_id)
             user = UnrestrictedUser(user_id, '', ['Manager'], '')
             faked = True

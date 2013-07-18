@@ -124,6 +124,49 @@ class NotifierControlPanelAdapter(SchemaAdapterBase):
 
     subscription_comment_edited_text = property(get_subscription_comment_edited_text, set_subscription_comment_edited_text)
 
+    def get_mailin_enabled(self):
+        util = queryUtility(INotifier)
+        return getattr(util, 'mailin_enabled', '')
+
+    def set_mailin_enabled(self, value):
+        util = queryUtility(INotifier)
+        if util is not None:
+            util.mailin_enabled = value
+
+    mailin_enabled = property(get_mailin_enabled, set_mailin_enabled)
+
+    def get_fake_manager(self):
+        util = queryUtility(INotifier)
+        return getattr(util, 'fake_manager', '')
+
+    def set_fake_manager(self, value):
+        util = queryUtility(INotifier)
+        if util is not None:
+            util.fake_manager = value
+
+    fake_manager = property(get_fake_manager, set_fake_manager)
+
+    def get_listen_addresses(self):
+        util = queryUtility(INotifier)
+        return getattr(util, 'listen_addresses', '')
+
+    def set_listen_addresses(self, value):
+        util = queryUtility(INotifier)
+        if util is not None:
+            util.listen_addresses = value
+
+    listen_addresses = property(get_listen_addresses, set_listen_addresses)
+
+    def get_add_attachments(self):
+        util = queryUtility(INotifier)
+        return getattr(util, 'add_attachments', '')
+
+    def set_add_attachments(self, value):
+        util = queryUtility(INotifier)
+        if util is not None:
+            util.add_attachments = value
+
+    add_attachments = property(get_add_attachments, set_add_attachments)
 
 
 class NotifierControlPanel(ControlPanelForm):
