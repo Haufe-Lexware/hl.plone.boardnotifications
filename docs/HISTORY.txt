@@ -1,12 +1,12 @@
 Changelog
 =========
 
-0.6dev (unreleased)
+0.6 (22.7.2013)
 -------------------
 
-- add 'commenttext' as a notification mail option (jean)
-- forum subscription (jean)
 - add mail-in functionality (jean)
+- forum subscription (jean)
+- add 'commenttext' as a notification mail option (jean)
 
 0.5 (11.2.2013)
 -------------------
