@@ -11,12 +11,12 @@ Changelog
 0.5 (11.2.2013)
 -------------------
 
-- added basque and spanish translations (thanks erral)
+- added basque and spanish translations (erral)
 
 0.4 (5.2.2013)
 -------------------
 
-- fix https://github.com/Haufe-Lexware/hl.plone.boardnotifications/issues/1 (thanks erral)
+- fix https://github.com/Haufe-Lexware/hl.plone.boardnotifications/issues/1 (erral)
 
 0.3 (13.12.2012)
 -------------------
