@@ -1,6 +1,9 @@
 Changelog
 =========
 
+0.8dev (unreleased)
+-------------------
+
 0.7 (1.8.2013)
 -------------------
 - meaningful viewlet names
