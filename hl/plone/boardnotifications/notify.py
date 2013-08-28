@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.utils import safe_unicode
 from zope.interface import implements
 from plone.app.controlpanel.form import ControlPanelForm
 from Products.MailHost.interfaces import IMailHost
@@ -104,7 +105,7 @@ class NotifierControlPanelAdapter(SchemaAdapterBase):
 
     def get_subscription_comment_added_text(self):
         util = queryUtility(INotifier)
-        return getattr(util, 'subscription_comment_added_text', '')
+        return getattr(util, 'subscription_comment_added_text', u'')
 
     def set_subscription_comment_added_text(self, value):
         util = queryUtility(INotifier)
@@ -268,7 +269,7 @@ class Notifier(Persistent):
         di.update(self._memberdata_for_content(comment))
         di['salutation'] = self._salutation_for_member(di)
         di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = comment.getText()
+        di['commenttext'] = safe_unicode(comment.getText())
         self._notify(di, self.comment_edited_text % di)
         log.info('comment %s has been edited, notified owner %s' % (di['commenturl'], di.get('email')))
 
@@ -299,7 +300,7 @@ class Notifier(Persistent):
         thread = comment.getConversation()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = comment.getText()
+        di['commenttext'] = safe_unicode(comment.getText())
         md = self._memberdata_for_content(comment)
         if md is None:
             log.info('member with id %s could not be found, unable to send notification for %s' % (comment.Creator(), di['commenturl']))
@@ -319,7 +320,7 @@ class Notifier(Persistent):
         forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = comment.getText()
+        di['commenttext'] = safe_unicode(comment.getText())
         subscriptions = getUtility(ISubscriptions)
         subscribers = subscriptions.subscribers_for(thread)
         subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
@@ -343,7 +344,7 @@ class Notifier(Persistent):
         forum = thread.getForum()
         di = self._thread_info(thread)
         di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = comment.getText()
+        di['commenttext'] = safe_unicode(comment.getText())
         subscriptions = getUtility(ISubscriptions)
         subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
         mdtool = getToolByName(comment, 'portal_memberdata')
