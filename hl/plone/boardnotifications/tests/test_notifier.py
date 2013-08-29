@@ -58,11 +58,11 @@ class NotifierTests(unittest.TestCase):
                                   title='test thread',
                                   forum=forum,
                                   creator=md1['id'],
-                                  commenttext='Awesome first comment!')
+                                  commenttext=u'Awesome – first comment!')
         comment = CommentMock(id='testcomment',
                               title='Re: test',
                               conversation=thread,
-                              text='Awesome second comment!',
+                              text=u'Awesome – second comment!'.encode('utf-8'),
                               creator=md2['id'])
         thread.comments.append(comment)
         thread._setObject(comment.id, comment)
@@ -174,7 +174,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrter Herr Max Mustermann', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']=='Awesome =E2=80=93 first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         self.app.portal_membership.authenticated = '123456'
         n.comment_edited(self.app.testforum.testthread.testthread)
@@ -222,7 +222,7 @@ class NotifierTests(unittest.TestCase):
         self.failUnless(got['salutation']=='Sehr geehrte Frau Liese M=C3=BCller', 'unexpected salutation, got "%s"' % got['salutation'])
         self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
         self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testcomment', 'unexpected comment url, got "%s"' % got['commenturl'])
-        self.failUnless(got['commenttext']=='Awesome second comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
+        self.failUnless(got['commenttext']==u'Awesome =E2=80=93 second comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         mh.emails = []
         n.comment_deleted_text = None
         n.comment_deleted(self.app.testforum.testthread.testcomment)
@@ -272,7 +272,7 @@ class NotifierTests(unittest.TestCase):
             self.failUnless(got['salutation'] in ['Sehr geehrte Frau Liese M=C3=BCller', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
             self.failUnless(got['threadtitle']=='test thread', 'unexpected thread title, got "%s"' % got['threadtitle'])
             self.failUnless(got['commenturl']=='http://nohost/testforum/testthread/testthread', 'unexpected comment url, got "%s"' % got['commenturl'])
-            self.failUnless(got['commenttext']=='Awesome first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
+            self.failUnless(got['commenttext']==u'Awesome =E2=80=93 first comment!', 'unexpected comment text, got "%s"' % got['commenttext'])
         comment = CommentMock(id='testcomment2',
                               title='Re: test',
                               conversation=self.app.testforum.testthread,
