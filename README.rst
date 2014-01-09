@@ -1,6 +1,12 @@
 Introduction
 ============
 
+
+.. image:: https://secure.travis-ci.org/Haufe-Lexware/hl.plone.boardnotifications.png
+    :target: http://travis-ci.org/Haufe-Lexware/hl.plone.boardnotifications
+
+.. contents::
+
 ``hl.plone.boardnotifications`` provides email notifications for 
 `Ploneboard <http://pypi.python.org/pypi/Products.Ploneboard>`__ for several
 purposes. It allows you to:
