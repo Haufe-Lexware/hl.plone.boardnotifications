@@ -26,11 +26,15 @@ setup(name='hl.plone.boardnotifications',
       install_requires=[
           'setuptools',
           'Products.Ploneboard >= 3.0',
+          'Products.CMFPlone >= 4.1',
           # -*- Extra requirements: -*-
       ],
       extras_require={
           'mailin': [
               'smtp2zope',
+              ],
+          'test': [
+              'plone.app.testing',
               ]
           },
       entry_points="""
