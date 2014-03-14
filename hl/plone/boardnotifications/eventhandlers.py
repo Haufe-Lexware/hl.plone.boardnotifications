@@ -52,8 +52,10 @@ def subscriptioncommentadded(comment, event):
 @adapter(IComment, IObjectRemovedEvent)
 def commentdeleted(comment, event):
     """
-    Send email notification when a comment has been edited
+    Send email notification when a comment has been deleted
     """
     n = queryUtility(INotifier)
+    if n is None:
+        return
     n.comment_deleted(comment)
 
