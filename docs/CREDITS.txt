@@ -2,7 +2,8 @@ hl.plone.boardnotifications credits
 -----------------------------------
 
 Tatjana Feiler (concept, documentation)
-Jean Jordaan ('commenttext' option, README.txt --> README.rst)
+Jean Jordaan ('commenttext' option, README.txt --> README.rst, mailin, forum subscription)
 Mikel Larreategi (basque and spanish translations)
+Rafael Oliveira (fix problem when deleting the Plone site)
 Thomas Schorr (main developer)
 
