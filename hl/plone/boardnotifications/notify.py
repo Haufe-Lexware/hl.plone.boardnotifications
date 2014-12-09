@@ -125,6 +125,17 @@ class NotifierControlPanelAdapter(SchemaAdapterBase):
 
     subscription_comment_edited_text = property(get_subscription_comment_edited_text, set_subscription_comment_edited_text)
 
+    def get_subscription_thread_moved_text(self):
+        util = queryUtility(INotifier)
+        return getattr(util, 'subscription_thread_moved_text', '')
+
+    def set_subscription_thread_moved_text(self, value):
+        util = queryUtility(INotifier)
+        if util is not None:
+            util.subscription_thread_moved_text = value
+
+    subscription_thread_moved_text = property(get_subscription_thread_moved_text, set_subscription_thread_moved_text)
+
     def get_mailin_enabled(self):
         util = queryUtility(INotifier)
         return getattr(util, 'mailin_enabled', '')
@@ -297,6 +308,24 @@ class Notifier(Persistent):
         result.update([(k, str(mdata.getProperty(k)).decode(cls._encoding())) for k in keys])
         return result
 
+    def _notify_thread_subscribers(self, thread, notification_text, comment=None):
+        forum = thread.getForum()
+        di = self._thread_info(thread)
+        if comment is not None:
+            di['commenturl'] = comment.absolute_url()
+            di['commenttext'] = safe_unicode(comment.getText())
+        subscriptions = getUtility(ISubscriptions)
+        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
+        mdtool = getToolByName(comment, 'portal_memberdata')
+        keys = mdtool.propertyIds()
+        for mdata in subscribers:
+            if (comment is not None) and (mdata.getId() == comment.Creator()):
+                continue
+            di.update([(k, str(mdata.getProperty(k)).decode(self._encoding())) for k in keys])
+            di['salutation'] = self._salutation_for_member(di)
+            self._notify(di, notification_text % di)
+            log.info('notified subscriber {subscriber}'.format(subscriber=di.get('email')))
+
     def comment_edited(self, comment):
         """
         A comment has been edited. Notify the creator of the comment.
@@ -360,22 +389,8 @@ class Notifier(Persistent):
         if not self.subscription_comment_edited_text or not self.subscription_comment_edited_text.strip():
             return
         thread = comment.getConversation()
-        forum = thread.getForum()
-        di = self._thread_info(thread)
-        di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = safe_unicode(comment.getText())
-        subscriptions = getUtility(ISubscriptions)
-        subscribers = subscriptions.subscribers_for(thread)
-        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
-        mdtool = getToolByName(comment, 'portal_memberdata')
-        keys = mdtool.propertyIds()
-        for mdata in subscribers:
-            if mdata.getId() == comment.Creator():
-                continue
-            di.update([(k, str(mdata.getProperty(k)).decode(self._encoding())) for k in keys])
-            di['salutation'] = self._salutation_for_member(di)
-            self._notify(di, self.subscription_comment_edited_text % di)
-            log.info('comment %s has been edited, notified subscriber %s' % (di['commenturl'], di.get('email')))
+        log.info('comment {url} has been edited'.format(url=comment.absolute_url()))
+        self._notify_thread_subscribers(thread, self.subscription_comment_edited_text, comment)
 
     def subscription_comment_added(self, comment):
         """
@@ -384,19 +399,14 @@ class Notifier(Persistent):
         if not self.subscription_comment_added_text or not self.subscription_comment_added_text.strip():
             return
         thread = comment.getConversation()
-        forum = thread.getForum()
-        di = self._thread_info(thread)
-        di['commenturl'] = comment.absolute_url()
-        di['commenttext'] = safe_unicode(comment.getText())
-        subscriptions = getUtility(ISubscriptions)
-        subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
-        mdtool = getToolByName(comment, 'portal_memberdata')
-        keys = mdtool.propertyIds()
-        for mdata in subscribers:
-            if mdata.getId() == comment.Creator():
-                continue
-            di.update([(k, str(mdata.getProperty(k)).decode(self._encoding())) for k in keys])
-            di['salutation'] = self._salutation_for_member(di)
-            self._notify(di, self.subscription_comment_added_text % di)
-            log.info('comment %s has been added, notified subscriber %s' % (di['commenturl'], di.get('email')))
+        log.info('comment {url} has been edited'.format(url=comment.absolute_url()))
+        self._notify_thread_subscribers(thread, self.subscription_comment_added_text, comment)
 
+    def subscription_thread_moved(self, thread):
+        """
+        A thread has been moved to another forum. Notify thread subscribers.
+        """
+        if not self.subscription_thread_moved_text or not self.subscription_thread_moved_text.strip():
+            return
+        log.info('thread {url} has been edited'.format(url=thread.absolute_url()))
+        self._notify_thread_subscribers(thread, self.subscription_thread_moved_text)

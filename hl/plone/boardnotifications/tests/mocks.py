@@ -88,7 +88,6 @@ class ConversationMock(ContentMock, Folder):
     """
     Mock relevant interface of PloneboardConversation
     """
-
     def __init__(self, id, title, forum, creator=None, commenttext=''):
         Folder.__init__(self, id)
         ContentMock.__init__(self, id, title, creator)

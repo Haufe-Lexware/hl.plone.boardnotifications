@@ -357,6 +357,41 @@ class NotifierTests(unittest.TestCase):
         got = len(mh.emails)
         self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
 
+    def test_subscription_thread_moved(self):
+        n = self._make_one()
+        subscriptions = self._register_subscriptions()
+        # Subscribe to the forum
+        subscriptions.add(self.app.testforum, '123321')
+        # Subscribe to a thread
+        subscriptions.add(self.app.testforum.testthread, '123456')
+        n.subscription_thread_moved_text = u'salutation:%(salutation)s\nthreadtitle:%(threadtitle)s\nthreadurl:%(threadurl)s\nboardtitle:%(boardtitle)s\nsignature:%(mailsignature)s'
+        n.signature='signature'
+        n.salutations = {u'Herr':u'Sehr geehrter Herr %(firstname)s %(lastname)s', u'Frau':u'Sehr geehrte Frau %(firstname)s %(lastname)s'}
+        mh = queryUtility(IMailHost)
+        mh.emails = []
+        n.subscription_thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==2, 'notifier should have sent 2 emails, got %s instead' % got)
+        for mail in mh.emails:
+            got = {}   
+            got.update([tuple(kv.split(':', 1)) for kv in mail[0][0].as_string().split('\n\n')[1].split('\n')])
+            self.failUnless(got['salutation'] in ['Sehr geehrter Herr Max Mustermann', 'Sehr geehrte Frau No Body'], 'unexpected salutation, got "%s"' % got['salutation'])
+        mh.emails = []
+        n.subscription_thread_moved_text = None
+        n.subscription_thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template is None')
+        mh.emails = []
+        n.subscription_thread_moved_text = ''
+        n.subscription_thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template is empty')
+        mh.emails = []
+        n.subscription_thread_moved_text = ' \r\n '
+        n.subscription_thread_moved(self.app.testforum.testthread)
+        got = len(mh.emails)
+        self.failUnless(got==0, 'no mails should be sent if the mail template contains only whitespace')
+
     def test_parse_email_headers(self):
         n = self._make_one()
         n.comment_edited_text = u'Subject:Changes in %(threadurl)s\n\nsalutation:%(salutation)s\nthreadtitle:%(threadtitle)s\ncommenturl:%(commenturl)s\nsignature:%(mailsignature)s'
