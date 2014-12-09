@@ -103,6 +103,10 @@ class INotifierSchema(Interface):
             description=_(u'Mail text to send to subscribers of a thread where '
                 'a comment has been added'))
 
+    subscription_thread_moved_text = Text(title=_(u'Thread moved (Subscriber)'),
+            required=False,
+            description=_(u'Mail text to send to subscribers when a thread has been moved to another board'))
+
     mailin_enabled = Bool(title=_(u'Enable mail-in support'), 
             default=False,
             description=_(u'Check to enable mail-in support (needs smtp2zope).'))

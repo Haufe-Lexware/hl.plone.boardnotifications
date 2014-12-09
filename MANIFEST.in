@@ -1,3 +1,4 @@
-include *.rst
-recursive-include docs *.txt *.GPL
-recursive-include hl *.zcml *.po *.mo *.pot *.pt *.xml
+recursive-include hl *
+recursive-include docs *
+include *
+global-exclude *.pyc
