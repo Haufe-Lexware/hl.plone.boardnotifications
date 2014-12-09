@@ -2,7 +2,6 @@ import unittest
 import transaction
 from Testing import ZopeTestCase
 from zope.component import getGlobalSiteManager
-from zope.copypastemove import ObjectMover
 from zope.interface.verify import verifyObject
 from zope.lifecycleevent import ObjectMovedEvent
 from Products.CMFCore.interfaces import ISiteRoot
