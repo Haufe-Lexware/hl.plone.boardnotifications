@@ -140,7 +140,7 @@ msgstr "Thema verschoben"
 
 #: ./interfaces.py:106
 msgid "Thread moved (Subscriber)"
-msgstr "Thread verschoben (Abonnenten)"
+msgstr "Thema verschoben (Abonnenten)"
 
 #: ./browser/subscribe.pt:9
 msgid "Unsubscribe"

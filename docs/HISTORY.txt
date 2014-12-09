@@ -2,7 +2,10 @@ Changelog
 =========
 
 0.9dev (unreleased)
--------------------
+------------------
+
+- when a thread is moved to another forum, move the subscriptions as well
+- notify subscribers when a thread is moved
 
 0.8 (19.3.2014)
 -------------------
