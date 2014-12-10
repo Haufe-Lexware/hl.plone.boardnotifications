@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hl.plone.boardnotifications 1.0\n"
-"POT-Creation-Date: 2013-07-22 09:33+0000\n"
+"POT-Creation-Date: 2014-12-09 14:47+0000\n"
 "PO-Revision-Date: 2013-02-05 16:53+0100\n"
 "Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
 "Language-Team: eu <eu@li.org>\n"
@@ -18,19 +18,23 @@ msgstr ""
 "Domain: hl.plone.boardnotifications\n"
 "X-Poedit-Language: Basque\n"
 
-#: ./interfaces.py:114
+#: ./interfaces.py:118
 msgid "Addresses to listen for mail"
+msgstr ""
+
+#: Profile title in configure.zcml
+msgid "Board Email Notifications"
 msgstr ""
 
 #: ./profiles/default/controlpanel.xml
 msgid "Board Notifications"
 msgstr "Ploneboarden jakinarazpenak"
 
-#: ./interfaces.py:122
+#: ./interfaces.py:126
 msgid "Check to allow uploading of attachments during mail-in."
 msgstr ""
 
-#: ./interfaces.py:108
+#: ./interfaces.py:112
 msgid "Check to enable mail-in support (needs smtp2zope)."
 msgstr ""
 
@@ -50,11 +54,11 @@ msgstr "Erantzuna editatu da"
 msgid "Comment edited (Subscriber)"
 msgstr "Erantzuna editatu da (Harpidedunentzat)"
 
-#: ./interfaces.py:106
+#: ./interfaces.py:110
 msgid "Enable mail-in support"
 msgstr ""
 
-#: ./notify.py:177
+#: ./notify.py:189
 msgid "Here you can configure the mail texts for mails that are sent out to creators or subscribers of board content when it changes. You can use the following keywords to replace them using content coming from the thread: %(threadtitle)s, %(threadurl)s, %(boardtitle)s, %(mailsignature)s, %(salutation)s and, when appropriate, %(commenturl)s and %(commenttext)s."
 msgstr ""
 
@@ -74,6 +78,10 @@ msgstr "Erantzun berri bat dagoenean harpidedunei bidali behar zaien mezua."
 msgid "Mail text to send to subscribers of a thread where a comment has been edited"
 msgstr "Erantzun berri bat editatzen denean harpidedunei bidali behar zaien mezua."
 
+#: ./interfaces.py:108
+msgid "Mail text to send to subscribers when a thread has been moved to another board"
+msgstr ""
+
 #: ./interfaces.py:94
 msgid "Mail text when a comment has been deleted"
 msgstr "Erantzun bat ezabatzen denean bidali behar den mezua"
@@ -86,11 +94,11 @@ msgstr "Erantzun bat editatzen denean bidali behar den mezua"
 msgid "Mail text when a thread has been moved to another board"
 msgstr "Mezu-hari bat beste foro batera mugitzen denean "
 
-#: ./interfaces.py:120
+#: ./interfaces.py:124
 msgid "Mail-in: Add attachments?"
 msgstr ""
 
-#: ./interfaces.py:110
+#: ./interfaces.py:114
 msgid "Mail-in: Fake Manager role?"
 msgstr ""
 
@@ -102,7 +110,11 @@ msgstr "Agurra"
 msgid "Map salutation from memberdata property to email salutation (one mapping per line, use : to separate key and value)."
 msgstr "Esleitu erabiltzailearen propietateak mezuaren agurrerako (esleipen bat lerro bakoitzean, erabili : gakoa eta balioa bereizteko. Adb.: izena:fullname)"
 
-#: ./notify.py:176
+#: Profile description in configure.zcml
+msgid "Send email notifications to thread/comment owners and subscribers in case of content changes."
+msgstr ""
+
+#: ./notify.py:188
 msgid "Settings for board notification mails"
 msgstr "Ploneboard-en jakinarazpenen ezarpenak"
 
@@ -110,7 +122,7 @@ msgstr "Ploneboard-en jakinarazpenen ezarpenak"
 msgid "Signature"
 msgstr "Sinadura"
 
-#: ./interfaces.py:115
+#: ./interfaces.py:119
 msgid "Specify network addresses from which mail-in requests can originate, one by line."
 msgstr ""
 
@@ -130,11 +142,15 @@ msgstr ""
 msgid "Thread moved"
 msgstr "Mezu-haria mugitu"
 
+#: ./interfaces.py:106
+msgid "Thread moved (Subscriber)"
+msgstr ""
+
 #: ./browser/subscribe.pt:9
 msgid "Unsubscribe"
 msgstr "Harpidetza eten"
 
-#: ./interfaces.py:112
+#: ./interfaces.py:116
 msgid "Use Manager role during mail-in request."
 msgstr ""
 
