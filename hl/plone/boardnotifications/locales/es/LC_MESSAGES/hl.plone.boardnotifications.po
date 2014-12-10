@@ -1,9 +1,6 @@
-# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
-# SOME DESCRIPTIVE TITLE.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: hl.plone.boardnotifications 1.0\n"
+"Project-Id-Version: hl.plone.boardnotifications 0.9\n"
 "POT-Creation-Date: 2014-12-09 14:47+0000\n"
 "PO-Revision-Date: 2013-02-05 16:58+0100\n"
 "Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"

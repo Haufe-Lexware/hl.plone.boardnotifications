@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.9dev'
+version = '0.9'
 
 setup(name='hl.plone.boardnotifications',
       version=version,
