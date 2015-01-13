@@ -10,7 +10,7 @@ from Products.Archetypes.interfaces import (
         IObjectInitializedEvent,
         )
 from Products.Ploneboard.interfaces import IConversation, IComment
-from .notify import INotifier
+from .interfaces import INotifier, ISubscriptions
 
 
 @adapter(IConversation, IObjectMovedEvent)
@@ -22,6 +22,8 @@ def threadmoved(conv, event):
         return
     n = queryUtility(INotifier)
     n.thread_moved(conv)
+    s = queryUtility(ISubscriptions)
+    s.move_subscribers(event)
 
 @adapter(IComment, IObjectModifiedEvent)
 def commentedited(comment, event):
