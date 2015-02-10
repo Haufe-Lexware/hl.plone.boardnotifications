@@ -8,7 +8,7 @@ from zope.component import getGlobalSiteManager
 from zope.interface.verify import verifyObject
 from zope.lifecycleevent import ObjectMovedEvent
 from Products.CMFCore.interfaces import ISiteRoot
-from mocks import MembershipToolMock, ForumMock, ConversationMock, MemberDataMock
+from mocks import MembershipToolMock, ForumMock, ConversationMock, MemberDataMock, ContentMock
 from hl.plone.boardnotifications.interfaces import ISubscriptions
 
 
@@ -79,8 +79,6 @@ class ConflictResolutionTests(unittest.TestCase):
 
     def _make_one(self):
         from hl.plone.boardnotifications.subscribe import Subscriptions
-        # patch key_for_obj
-        Subscriptions.key_for_obj = lambda inst, o: o
         return Subscriptions()
 
     def tearDown(self):
@@ -103,30 +101,31 @@ class ConflictResolutionTests(unittest.TestCase):
         s_A = conn_A.root()['subscriptions'] = self._make_one()
         for k in range(0, 128, 4):
             # fill 2 buckets
-            s_A.add('testforum/{}'.format(k), k)
+            co = ContentMock('testforum/k')
+            s_A.add(co, k)
         tm_A.commit()
         tm_B = transaction.TransactionManager()
         conn_B = db.open(transaction_manager=tm_B)
         s_B = conn_B.root()['subscriptions']
-        # none of the following should raise a conflict
-        s_A.add('testforum/13', 13)
-        s_B.add('testforum/93', 93)
+        s_A.add(ContentMock('testforum/13'), 13)
+        s_B.add(ContentMock('testforum/93'), 93)
         tm_A.commit()
         tm_B.commit()
         tm_A.begin()
-        s_A.remove('testforum/13', 13)
-        s_B.remove('testforum/93', 93)
+        s_A.remove(ContentMock('testforum/13'), 13)
+        s_B.remove(ContentMock('testforum/93'), 93)
         tm_A.commit()
-        tm_B.commit()
+        self.assertRaises(ConflictError, tm_B.commit)
+        tm_B.abort()
         tm_A.begin()
-        s_A.add('testforum/1', 1)
-        s_B.add('testforum/2', 2)
+        s_A.add(ContentMock('testforum/1'), 1)
+        s_B.add(ContentMock('testforum/2'), 2)
         tm_A.commit()
         tm_B.commit()
         tm_A.begin()
         tm_B.begin()
-        s_A.add('testforum/1', 1)
-        s_B.remove('testforum/1', 1)
+        s_A.add(ContentMock('testforum/1'), 1)
+        s_B.remove(ContentMock('testforum/1'), 1)
         tm_A.commit()
         tm_B.commit()
 

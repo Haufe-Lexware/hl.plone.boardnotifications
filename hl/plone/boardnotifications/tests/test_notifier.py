@@ -281,7 +281,7 @@ class NotifierTests(unittest.TestCase):
         self.app.testforum.testthread.comments.append(comment)
         self.app.testforum.testthread._setObject(comment.id, comment)
         subscriptions.add(self.app.testforum.testthread, '123456')
-        mh.emails = []   
+        mh.emails = []
         n.subscription_comment_edited(self.app.testforum.testthread.testcomment2)
         self.failUnless(len(mh.emails)==2, 'expected two mails for two subscribers')
         for mail in mh.emails:

@@ -59,7 +59,7 @@ class ContentMock(SimpleItem):
     Dublin Core as needed
     """
 
-    def __init__(self, id, title, creator=None):
+    def __init__(self, id, title=None, creator=None):
         self.id = id
         self.title = title
         self.creator = creator
@@ -73,15 +73,15 @@ class ContentMock(SimpleItem):
     def absolute_url(self):
         return 'http://nohost/%s' % self.id
 
+    def getPhysicalPath(self):
+        return (self.id,)
+
 
 class ForumMock(ContentMock, Folder):
     
     def __init__(self, id, title):
         ContentMock.__init__(self, id, title)
         Folder.__init__(self, id)
-
-    def getPhysicalPath(self):
-        return (self.id,)
 
 
 class ConversationMock(ContentMock, Folder):
