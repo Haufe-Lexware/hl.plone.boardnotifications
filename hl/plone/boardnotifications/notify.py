@@ -316,7 +316,7 @@ class Notifier(Persistent):
             di['commenttext'] = safe_unicode(comment.getText())
         subscriptions = getUtility(ISubscriptions)
         subscribers = set(subscriptions.subscribers_for(thread)) | set(subscriptions.subscribers_for(forum))
-        mdtool = getToolByName(comment, 'portal_memberdata')
+        mdtool = getToolByName(thread, 'portal_memberdata')
         keys = mdtool.propertyIds()
         for mdata in subscribers:
             if (comment is not None) and (mdata.getId() == comment.Creator()):
