@@ -1,5 +1,5 @@
 import logging
-from persistent.mapping import PersistentMapping
+from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from zope.interface import implements
 from Products.CMFCore.utils import getToolByName
@@ -8,7 +8,7 @@ from .interfaces import ISubscriptions
 log = logging.getLogger('hl.plone.boardnotifications.subscribe')
 
 
-class Subscriptions(PersistentMapping):
+class Subscriptions(OOBTree):
 
     """
     Part of this code has been taken from Products.PloneboardSubscription

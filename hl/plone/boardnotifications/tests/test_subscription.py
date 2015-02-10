@@ -1,4 +1,7 @@
+import os
 import unittest
+import ZODB
+from ZODB.POSException import ConflictError
 import transaction
 from Testing import ZopeTestCase
 from zope.component import getGlobalSiteManager
@@ -70,10 +73,68 @@ class SubscriptionTests(unittest.TestCase):
         email = got[0].getProperty('email')
         self.failUnless(email == 'max.mustermann@haufe-lexware.com', 'wrong memberdata %s' % got[0])
 
+class ConflictResolutionTests(unittest.TestCase):
+
+    _test_db_name = 'hl.plone.boardnotificatiosn.unittests.fs'
+
+    def _make_one(self):
+        from hl.plone.boardnotifications.subscribe import Subscriptions
+        # patch key_for_obj
+        Subscriptions.key_for_obj = lambda inst, o: o
+        return Subscriptions()
+
+    def tearDown(self):
+        """
+        delete test ZODB
+        """
+        os.unlink(self._test_db_name)
+
+    def setUp(self):
+        try:
+            self.tearDown()
+        except OSError, error:
+            if error.errno != 2:
+                raise
+
+    def test_conflict_resolution(self):
+        db = ZODB.DB(self._test_db_name)
+        tm_A = transaction.TransactionManager()
+        conn_A = db.open(transaction_manager=tm_A)
+        s_A = conn_A.root()['subscriptions'] = self._make_one()
+        for k in range(0, 128, 4):
+            # fill 2 buckets
+            s_A.add('testforum/{}'.format(k), k)
+        tm_A.commit()
+        tm_B = transaction.TransactionManager()
+        conn_B = db.open(transaction_manager=tm_B)
+        s_B = conn_B.root()['subscriptions']
+        # none of the following should raise a conflict
+        s_A.add('testforum/13', 13)
+        s_B.add('testforum/93', 93)
+        tm_A.commit()
+        tm_B.commit()
+        tm_A.begin()
+        s_A.remove('testforum/13', 13)
+        s_B.remove('testforum/93', 93)
+        tm_A.commit()
+        tm_B.commit()
+        tm_A.begin()
+        s_A.add('testforum/1', 1)
+        s_B.add('testforum/2', 2)
+        tm_A.commit()
+        tm_B.commit()
+        tm_A.begin()
+        tm_B.begin()
+        s_A.add('testforum/1', 1)
+        s_B.remove('testforum/1', 1)
+        tm_A.commit()
+        tm_B.commit()
+
 
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(SubscriptionTests),
+        unittest.makeSuite(ConflictResolutionTests),
         ))
 
 if __name__ == '__main__':
