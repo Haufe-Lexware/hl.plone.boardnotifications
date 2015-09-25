@@ -269,6 +269,11 @@ class Notifier(Persistent):
         return getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
 
     def _notify(self, mdata, text):
+        to_email = mdata.get('email')
+        if not to_email:
+            log.info('Cannot send notification e-mail because there\'s no destination.')
+            return
+
         headers = {}
         headers.update([tp for tp in HeaderParser().parsestr(text.encode(self._encoding())).items() if tp[0] in self.valid_headers])
         if headers.keys():
@@ -277,7 +282,7 @@ class Notifier(Persistent):
         msg = MIMEText(text, _charset=self._encoding())
         msg['Subject'] = self.subject
         msg['From'] = getUtility(ISiteRoot).email_from_address
-        msg['To'] = mdata.get('email')
+        msg['To'] = to_email
         for k, v in headers.items():
             msg.replace_header(k, v)
         mh = getUtility(IMailHost)
