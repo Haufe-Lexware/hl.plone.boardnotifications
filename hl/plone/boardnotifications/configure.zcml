@@ -19,6 +19,14 @@
       description="Send email notifications to thread/comment owners and subscribers in case of content changes."
       provides="Products.GenericSetup.interfaces.EXTENSION" />
 
+  <genericsetup:upgradeStep
+      profile="hl.plone.boardnotifications:default"
+      source="*"
+      destination="1.1"
+      title="Migrate subscription data."
+      handler=".upgrades.upgrade_subscriptions"
+      />
+
   <subscriber handler=".eventhandlers.threadmoved" />
   <subscriber handler=".eventhandlers.commentedited" />
   <subscriber handler=".eventhandlers.commentdeleted" />
