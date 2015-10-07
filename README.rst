@@ -30,6 +30,17 @@ Installation
    ``@@boardnotifier-settings``) and configure the mail templates (see
    `Configuration of Mail Templates`_ below).
 
+Upgrading from previous versions
+================================
+
+In version 1.1, storing subscriptions has changed. To migrate existing subscriptions:
+
+1. Backup your database
+2. go to Plone Control Panel -> Add-ons
+3. scroll down to Activated add-ons, search for Board Email Notifications and click Upgrade
+
+If anything goes wrong feel free to submit a `bug report <https://github.com/Haufe-Lexware/hl.plone.boardnotifications/issues>`__
+
 Configuration of Mail Templates
 ===============================
 

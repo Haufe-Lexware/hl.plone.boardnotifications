@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - do not try to send notification e-mail if destination address is not available (rafaelbco)
+- use an OOBTree for storing subscriptions
 
 1.0 (2015-01-13)
 ------------------
