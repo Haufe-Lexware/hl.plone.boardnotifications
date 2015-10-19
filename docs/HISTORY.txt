@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1dev (unreleased)
+1.1 (2015-10-19)
 ------------------
 
 - do not try to send notification e-mail if destination address is not available (rafaelbco)
